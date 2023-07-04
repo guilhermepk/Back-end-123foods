@@ -8,9 +8,8 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  app.setViewEngine('ejs');
+  // Configurar o middleware serveStatic para servir arquivos estáticos do React
+  app.useStaticAssets(join(__dirname,'..','public'));
   
   app.useGlobalPipes(
     new ValidationPipe({

@@ -3,7 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigService } from './config/postgres.config.service';
 import { FoodsModule } from './foods/foods.module';
-import { ViewModule } from './view/view.module';
+import { UsersModule } from './users/users.module';
+import { AppController } from './app controller';
 @Module({
   imports: [
     FoodsModule,
@@ -16,9 +17,9 @@ import { ViewModule } from './view/view.module';
       inject: [PostgresConfigService],
     }),
     FoodsModule,
-    ViewModule,
+    UsersModule,
    
   ],
-  controllers: [],
+  controllers: [AppController],
 })
 export class AppModule {}

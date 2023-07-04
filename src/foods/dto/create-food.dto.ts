@@ -7,13 +7,9 @@ export class CreateFoodDto{
     name:string;
     
     @IsNotEmpty()
-    @IsString()
     description:string;
 
 
-    // @IsNumber({},{ each: true })
-    // price: number[];
     @IsNumber()
-    // @Type(() => Number)
     price: number;
 }
