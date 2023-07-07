@@ -9,6 +9,21 @@ export class Food {
   name: string;
 
   @Column()
+  brand: string;
+
+  @Column({ type: 'numeric'})
+  weight:number;
+  
+  @Column()
+  unit_of_measurement: string;
+
+  @Column()
+  category: string;
+
+  @Column()
+  qtd: number;
+
+  @Column()
   description: string;
 
   @Column({ type: 'numeric'})

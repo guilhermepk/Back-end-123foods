@@ -3,14 +3,12 @@ import { CreateFoodDto } from './create-food.dto';
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class UpdateFoodDto extends PartialType(CreateFoodDto) {
-  @IsString()
-  @IsNotEmpty()
   name: string;
-
-  @IsNotEmpty()
-  @IsString()
+  brand: string;
+  weight: number;
+  unit_of_measurement: string;
+  category: string;
+  qtd: number;
   description: string;
-  
- @IsNumber()
-  price:number;
+  price: number;
 }

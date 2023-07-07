@@ -6,6 +6,6 @@ import { join } from 'path';
 export class AppController {
   @Get()
   root(@Res() res: Response): void {
-    res.sendFile(join(__dirname, '.', 'public', 'FoodForm.js'));
+    res.sendFile(join(__dirname, '.', 'public', 'index.html'));
   }
 }

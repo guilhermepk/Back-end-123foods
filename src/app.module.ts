@@ -5,6 +5,9 @@ import { PostgresConfigService } from './config/postgres.config.service';
 import { FoodsModule } from './foods/foods.module';
 import { UsersModule } from './users/users.module';
 import { AppController } from './app controller';
+import { AdminsModule } from './admins/admins.module';
+import { CartsModule } from './carts/carts.module';
+import { ImagesModule } from './images/images.module';
 @Module({
   imports: [
     FoodsModule,
@@ -18,6 +21,9 @@ import { AppController } from './app controller';
     }),
     FoodsModule,
     UsersModule,
+    AdminsModule,
+    CartsModule,
+    ImagesModule,
    
   ],
   controllers: [AppController],

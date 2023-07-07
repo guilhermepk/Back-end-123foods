@@ -1,15 +1,29 @@
-import { Type } from "class-transformer";
-import { IsInt, IsNotEmpty, IsNumber, IsString, isString } from "class-validator";
-import { isFloat32Array } from "util/types";
+import { IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
+
 export class CreateFoodDto{
-    
-    @IsString()
-    name:string;
+    @IsNotEmpty()
+    name: string;
     
     @IsNotEmpty()
-    description:string;
+    brand: string;
 
+    @IsNumber()
+    weight: number;
+
+    @IsNotEmpty()
+    unit_of_measurement: string;
+
+    @IsNotEmpty()
+    category: string;
+
+    @IsNumber()
+    qtd: number;
+
+    @IsNotEmpty()
+    description: string;
 
     @IsNumber()
     price: number;
+    
+    
 }
