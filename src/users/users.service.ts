@@ -3,28 +3,28 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from "./entities/user.entity";
+import { Users } from "./entities/users.entity";
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private userRepository:Repository<User>,
+    @InjectRepository(Users)
+    private userRepository:Repository<Users>
   ){}
 
-  async create(createUserDto:CreateUserDto):Promise<User>{
+  async create(createUserDto:CreateUserDto):Promise<Users>{
     const user = this.userRepository.create(createUserDto);
     return this.userRepository.save(user);
   }
 
-  async findAll():Promise<User[]>{
+  async findAll():Promise<Users[]>{
     return this.userRepository.find();
   }
   
-  async findOne(id:number):Promise<User>{
+  async findOne(id:number):Promise<Users>{
     return this.userRepository.findOne({where:{id}});
   }
-  async update(id:number, updateUserDto:UpdateUserDto): Promise<User> {
+  async update(id:number, updateUserDto:UpdateUserDto): Promise<Users> {
     const user =await this.userRepository.findOne({where:{id}});
     if (!user) {
     throw new NotFoundException('Usuario não encontrado');

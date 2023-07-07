@@ -3,28 +3,28 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
-import { Admin } from "./entities/admin.entity";
+import { Admins } from "./entities/admins.entity";
 
 @Injectable()
 export class AdminsService {
   constructor(
-    @InjectRepository(Admin)
-    private adminRepository:Repository<Admin>,
+    @InjectRepository(Admins)
+    private adminRepository:Repository<Admins>,
   ){}
 
-  async create(createAdminDto:CreateAdminDto):Promise<Admin>{
+  async create(createAdminDto:CreateAdminDto):Promise<Admins>{
     const user = this.adminRepository.create(createAdminDto);
     return this.adminRepository.save(user);
   }
 
-  async findAll():Promise<Admin[]>{
+  async findAll():Promise<Admins[]>{
     return this.adminRepository.find();
   }
   
-  async findOne(id:number):Promise<Admin>{
+  async findOne(id:number):Promise<Admins>{
     return this.adminRepository.findOne({where:{id}});
   }
-  async update(id:number, updateAdminDto:UpdateAdminDto): Promise<Admin> {
+  async update(id:number, updateAdminDto:UpdateAdminDto): Promise<Admins> {
     const admin =await this.adminRepository.findOne({where:{id}});
     if (!admin) {
     throw new NotFoundException('Administrador não encontrado');

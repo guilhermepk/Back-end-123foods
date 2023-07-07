@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Render, NotFoundExce
 import { FoodsService } from './foods.service';
 import { CreateFoodDto } from './dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
-import { Food } from './entities/food.entity';
+import { Foods } from './entities/foods.entity';
 @Controller('foods')
 export class FoodsController {
   constructor(private readonly foodsService: FoodsService) {}
@@ -22,7 +22,7 @@ export class FoodsController {
   priceAll(
     @Param('minPrice') minPrice: number,
     @Param('maxPrice') maxPrice: number,
-  ): Promise<Food[]> {
+  ): Promise<Foods[]> {
   return this.foodsService.priceAll(minPrice, maxPrice);
 }
 
@@ -30,7 +30,7 @@ export class FoodsController {
 filterAll(
   @Param('filterType') filterType: string,
   @Param('filterValue') filterValue: string
-): Promise<Food[]> {
+): Promise<Foods[]> {
   if(
     filterType === 'name'
     || filterType === 'brand'

@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, ILike, Repository } from 'typeorm';
-import { Food } from './entities/food.entity';
+import { Foods } from './entities/foods.entity';
 import { CreateFoodDto } from './dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
 
@@ -11,10 +11,10 @@ export class FoodsService {
   
 
   constructor(
-    @InjectRepository(Food)
-    private foodRepository: Repository<Food>,
+    @InjectRepository(Foods)
+    private foodRepository: Repository<Foods>,
   ) {}
-  async priceAll( minPrice: number, maxPrice: number): Promise<Food[]> {
+  async priceAll( minPrice: number, maxPrice: number): Promise<Foods[]> {
     return this.foodRepository.find({
       where: {
         price: Between(minPrice, maxPrice)
@@ -22,23 +22,23 @@ export class FoodsService {
     });
   }
 
-  async filterAll(filterType: string, filterValue: string): Promise<Food[]> {
+  async filterAll(filterType: string, filterValue: string): Promise<Foods[]> {
     return this.foodRepository.find({ where: { [filterType]: ILike(`%${filterValue}%`) } });
   }
 
-  async findAll(): Promise<Food[]> {
+  async findAll(): Promise<Foods[]> {
     return this.foodRepository.find();
   }
-  async create(createFoodDto: CreateFoodDto): Promise<Food> {
+  async create(createFoodDto: CreateFoodDto): Promise<Foods> {
     const food = this.foodRepository.create(createFoodDto);
     return this.foodRepository.save(food);
   }
 
-  async findOne(id: number): Promise<Food> {
+  async findOne(id: number): Promise<Foods> {
     return this.foodRepository.findOne({ where: { id } });
   }
 
-  async update(id: number, updateFoodDto: UpdateFoodDto): Promise<Food> {
+  async update(id: number, updateFoodDto: UpdateFoodDto): Promise<Foods> {
     const food = await this.foodRepository.findOne({ where: { id } });
     if (!food) {
       throw new NotFoundException('Food not found');

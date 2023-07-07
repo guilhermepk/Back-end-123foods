@@ -1,5 +1,11 @@
-import { IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber } from 'class-validator';
 
-export class CreateCartDto{
-    
+export class CreateCartDto {
+  @IsNumber()
+  @IsNotEmpty()
+  userId: number;
+
+  @IsArray()
+  @IsNotEmpty()
+  foodIds: number[];
 }

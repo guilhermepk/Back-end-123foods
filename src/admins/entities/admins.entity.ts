@@ -1,4 +1,3 @@
-
 import {
     Entity,
     Column,
@@ -9,11 +8,17 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Image {
+export class Admins {
   @PrimaryGeneratedColumn()
   id: number;
- @Column()
-  address:string;
+  @Column()
+  name: string;
+  @Column()
+  phone:string;
+  @Column()
+  email:string;
+  @Column()
+  password:string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;
