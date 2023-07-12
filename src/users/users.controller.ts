@@ -6,15 +6,16 @@ import { AuthGuard } from '@nestjs/passport';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
+
 @Controller('users')
 export class UsersController {
   EntityManager: any;
   constructor(private readonly usersService: UsersService) {}
-  @Post('upload')
-@UseInterceptors(FileInterceptor('file'))
-uploadFile(@UploadedFile() file: Express.Multer.File) {
-  console.log(file);
-}
+  // @Post('upload')
+  // @UseInterceptors(FileInterceptor('file'))
+  // uploadFile(@UploadedFile() file: Express.Multer.File) {
+  // console.log(file);
+  // }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
