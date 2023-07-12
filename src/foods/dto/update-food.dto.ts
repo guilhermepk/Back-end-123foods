@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateFoodDto } from './create-food.dto';
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { Images } from 'src/images/entities/images.entity';
 
 export class UpdateFoodDto extends PartialType(CreateFoodDto) {
   name: string;
@@ -11,4 +11,5 @@ export class UpdateFoodDto extends PartialType(CreateFoodDto) {
   qtd: number;
   description: string;
   price: number;
+  // images: Images[];
 }

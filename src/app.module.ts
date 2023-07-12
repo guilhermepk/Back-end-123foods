@@ -6,11 +6,15 @@ import { FoodsModule } from './foods/foods.module';
 import { UsersModule } from './users/users.module';
 import { AppController } from './app controller';
 import { AdminsModule } from './admins/admins.module';
-import { CartsModule } from './carts/carts.module';
+import { PurchasesModule } from './purchases/purchases.module';
 import { ImagesModule } from './images/images.module';
+import { AuthModule } from './auth/auth.module';
+import { FoodsHasImagesModule } from './foods_has_images/foods_has_images.module';
+
+
 @Module({
   imports: [
-    FoodsModule,
+    FoodsModule,UsersModule,
     
     ConfigModule.forRoot({
       isGlobal: true,
@@ -22,10 +26,14 @@ import { ImagesModule } from './images/images.module';
     FoodsModule,
     UsersModule,
     AdminsModule,
-    CartsModule,
+    PurchasesModule,
     ImagesModule,
+    AuthModule,
+    FoodsHasImagesModule,
+
    
   ],
   controllers: [AppController],
+  
 })
 export class AppModule {}

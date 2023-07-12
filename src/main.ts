@@ -4,7 +4,7 @@ import { useContainer } from 'class-validator';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from './app.module';
-
+import * as cors from 'cors';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
@@ -20,6 +20,7 @@ async function bootstrap() {
   );
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
+  app.use(cors());
   await app.listen(3000);
 }
 

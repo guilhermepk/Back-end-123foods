@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException, UsePipes } from "@nestjs/common";
+import { Injectable, NotFoundException, UsePipes } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAdminDto } from './dto/create-admin.dto';
@@ -29,11 +29,7 @@ export class AdminsService {
     if (!admin) {
     throw new NotFoundException('Administrador não encontrado');
     }
-     admin.name=updateAdminDto.name;
-     admin.phone=updateAdminDto.phone;
-     admin.email=updateAdminDto.email;
-     admin.password=updateAdminDto.password;
-
+    admin.user = updateAdminDto.user;
 
   const updatedAdmin=await this.adminRepository.save(admin);
 

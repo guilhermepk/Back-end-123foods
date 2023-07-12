@@ -1,4 +1,5 @@
-import { IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsArray, IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { Images } from "src/images/entities/images.entity";
 
 export class CreateFoodDto{
     @IsNotEmpty()
@@ -25,5 +26,6 @@ export class CreateFoodDto{
     @IsNumber()
     price: number;
     
-    
+    // @IsArray()
+    // images: Array<Images>
 }

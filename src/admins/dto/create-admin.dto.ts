@@ -1,16 +1,6 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString } from "class-validator";
+import { Users } from "src/users/entities/users.entity";
 
 export class CreateAdminDto {
-    @IsNotEmpty()
-    name: string;
-
-    @IsOptional()
-    @IsPhoneNumber()
-    phone?: string;
-
-    @IsEmail()
-    email: string;
-
-    @IsNotEmpty()
-    password: string;
+    user: Users;
 }

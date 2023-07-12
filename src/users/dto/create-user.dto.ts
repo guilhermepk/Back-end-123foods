@@ -1,6 +1,10 @@
-import { IsDate, IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from "class-validator";
+import { IsBoolean, IsDate, IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from "class-validator";
 
 export class CreateUserDto {
+    @IsBoolean()
+    // admin: boolean = false; //confirmar o false automatico
+    admin: boolean;
+
     @IsNotEmpty()
     name: string;
 
@@ -33,4 +37,7 @@ export class CreateUserDto {
 
     @IsString()
     cep: string;
+
+    @IsString()
+    image: string;
 }

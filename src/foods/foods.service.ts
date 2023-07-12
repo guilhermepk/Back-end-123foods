@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, ILike, Repository } from 'typeorm';
 import { Foods } from './entities/foods.entity';
@@ -8,8 +8,6 @@ import { UpdateFoodDto } from './dto/update-food.dto';
 @Injectable()
 
 export class FoodsService {
-  
-
   constructor(
     @InjectRepository(Foods)
     private foodRepository: Repository<Foods>,
@@ -21,7 +19,11 @@ export class FoodsService {
       }
     });
   }
+  // async search( filterValue:string):Promise<Foods[]>{
+  //   return this.foodRepository.find(where: { [category||name||description]: ILike(`%${filterValue}%`) })
+  // }
 
+  
   async filterAll(filterType: string, filterValue: string): Promise<Foods[]> {
     return this.foodRepository.find({ where: { [filterType]: ILike(`%${filterValue}%`) } });
   }
@@ -51,6 +53,7 @@ export class FoodsService {
     food.qtd = updateFoodDto.qtd;
     food.description = updateFoodDto.description;
     food.price = updateFoodDto.price;
+    // food.images = updateFoodDto.images;
 
     const updatedFood = await this.foodRepository.save(food);
   

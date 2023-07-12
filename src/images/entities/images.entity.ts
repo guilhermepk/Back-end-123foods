@@ -1,19 +1,26 @@
 
+import { FoodsHasImages } from 'src/foods_has_images/entities/foods_has_image.entity';
 import {
     Entity,
     Column,
     PrimaryGeneratedColumn,
     CreateDateColumn,
     UpdateDateColumn,
-    DeleteDateColumn
+    DeleteDateColumn,
+    OneToMany
 } from 'typeorm';
 
 @Entity()
 export class Images {
   @PrimaryGeneratedColumn()
   id: number;
- @Column()
-  path:string;
+  @Column()
+  name: string;
+  @Column()
+  path: string;
+
+  @OneToMany(() => FoodsHasImages, (foods_has_images) => foods_has_images.image)
+  foods_has_images: FoodsHasImages[]
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

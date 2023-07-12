@@ -3,6 +3,7 @@ import { FoodsService } from './foods.service';
 import { CreateFoodDto } from './dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
 import { Foods } from './entities/foods.entity';
+
 @Controller('foods')
 export class FoodsController {
   constructor(private readonly foodsService: FoodsService) {}

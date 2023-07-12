@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ImagesService } from './images.service';
 import { ImagesController } from './images.controller';
-
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Images } from './entities/images.entity';
 @Module({
+  imports: [
+    TypeOrmModule.forFeature([Images]),
+  ],
   controllers: [ImagesController],
-  providers: [ImagesService]
+  providers: [ImagesService],
+  exports:[ImagesService],
 })
 export class ImagesModule {}

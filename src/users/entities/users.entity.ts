@@ -1,10 +1,12 @@
 
-import { Carts } from 'src/carts/entities/carts.entity';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToOne } from 'typeorm';
+import { Purchases } from 'src/purchases/entities/purchases.entity';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToOne, OneToMany } from 'typeorm';
 @Entity()
 export class Users {
   @PrimaryGeneratedColumn()
   id: number;
+  @Column()
+  admin: boolean;
   @Column()
   name: string;
   @Column()
@@ -14,7 +16,7 @@ export class Users {
   @Column()
   cpf:string;
   @Column()
-  phone:string;
+  phone?:string;
   @Column()
   email:string;
   @Column()
@@ -27,8 +29,11 @@ export class Users {
   state:string;
   @Column()
   cep:string;
-  @OneToOne(() => Carts, cart => cart.userId)
-  cart: Carts;
+  @Column()
+  image?:string;
+
+  @OneToMany(() => Purchases, (purchase) => purchase.user)
+  purchases: Purchases[]
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

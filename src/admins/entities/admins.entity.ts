@@ -4,21 +4,20 @@ import {
     PrimaryGeneratedColumn,
     CreateDateColumn,
     UpdateDateColumn,
-    DeleteDateColumn
+    DeleteDateColumn,
+    OneToOne,
+    JoinColumn
 } from 'typeorm';
+import { Users } from '../../users/entities/users.entity';
 
 @Entity()
 export class Admins {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
-  name: string;
-  @Column()
-  phone:string;
-  @Column()
-  email:string;
-  @Column()
-  password:string;
+
+  @OneToOne(() => Users)
+  @JoinColumn()
+  user: Users;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;
