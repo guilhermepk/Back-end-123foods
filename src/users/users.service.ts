@@ -7,6 +7,9 @@ import { Users } from "./entities/users.entity";
 import * as bcrypt from 'bcrypt'
 @Injectable()
 export class UsersService {
+  findById(id: any) {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     @InjectRepository(Users)
     private userRepository:Repository<Users>
@@ -36,7 +39,7 @@ export class UsersService {
     }
     user.admin=updateUserDto.admin; 
     user.name=updateUserDto.name;
-    user
+    user.image = updateUserDto.image;
     user.cpf=updateUserDto.cpf;
     user.phone=updateUserDto.phone;
     user.email=updateUserDto.email;

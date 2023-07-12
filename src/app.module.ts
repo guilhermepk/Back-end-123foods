@@ -5,11 +5,12 @@ import { PostgresConfigService } from './config/postgres.config.service';
 import { FoodsModule } from './foods/foods.module';
 import { UsersModule } from './users/users.module';
 import { AppController } from './app controller';
-import { AdminsModule } from './admins/admins.module';
 import { PurchasesModule } from './purchases/purchases.module';
 import { ImagesModule } from './images/images.module';
 import { AuthModule } from './auth/auth.module';
 import { FoodsHasImagesModule } from './foods_has_images/foods_has_images.module';
+
+import { MulterModule } from '@nestjs/platform-express';
 
 
 @Module({
@@ -25,9 +26,9 @@ import { FoodsHasImagesModule } from './foods_has_images/foods_has_images.module
     }),
     FoodsModule,
     UsersModule,
-    AdminsModule,
     PurchasesModule,
     ImagesModule,
+    MulterModule.register({dest:'./upload'}),
     AuthModule,
     FoodsHasImagesModule,
 

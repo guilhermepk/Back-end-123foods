@@ -2,8 +2,7 @@ import { IsBoolean, IsDate, IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from 
 
 export class CreateUserDto {
     @IsBoolean()
-    // admin: boolean = false; //confirmar o false automatico
-    admin: boolean;
+    admin: boolean= false;
 
     @IsNotEmpty()
     name: string;

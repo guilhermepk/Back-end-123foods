@@ -5,8 +5,8 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 export class Users {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
-  admin: boolean;
+  @Column({ default: false })
+  admin?: boolean;
   @Column()
   name: string;
   @Column()
