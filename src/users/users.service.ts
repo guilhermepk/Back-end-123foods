@@ -20,11 +20,7 @@ export class UsersService {
     user.password=bcrypt.hashSync(createUserDto.password,8)
     return this.userRepository.save(user);
   }
-  // async login(email:string,password:string):Promise<Users[]>{
-
-
-  // }
-
+ 
   async findAll():Promise<Users[]>{
     return this.userRepository.find();
   }

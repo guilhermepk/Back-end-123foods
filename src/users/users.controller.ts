@@ -24,10 +24,10 @@ export class UsersController {
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Body() createUserDto: CreateUserDto) {
-  const fileName = file.filename;
-  createUserDto.image = fileName;
-  const user = await this.usersService.create(createUserDto);
-  return { user, fileName };
+    const fileName = file.filename;
+    createUserDto.image = fileName;
+    const user = await this.usersService.create(createUserDto);
+    return { user, fileName };
 }
  
   
