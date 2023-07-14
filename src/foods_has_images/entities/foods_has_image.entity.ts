@@ -1,6 +1,6 @@
 import { Foods } from "src/foods/entities/foods.entity";
 import { Images } from "src/images/entities/images.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class FoodsHasImages {
@@ -11,4 +11,10 @@ export class FoodsHasImages {
     food: Foods
     @ManyToOne(() => Images, (image) => image.foods_has_images)
     image: Images
+
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt?: Date;
+
+    @UpdateDateColumn({ name: 'updated_at' })
+    updatedAt?: Date;
 }

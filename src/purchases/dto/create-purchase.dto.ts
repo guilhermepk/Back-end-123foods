@@ -1,12 +1,11 @@
-import { IsArray, IsNotEmpty, IsNumber } from 'class-validator';
-import { Users } from 'src/users/entities/users.entity';
-import { Foods } from 'src/foods/entities/foods.entity';
+import { IsNumber } from 'class-validator';
 
 export class CreatePurchaseDto {
+  @IsNumber()
+  userId: number;
 
-  user: Users;
-
-  food: Foods;
+  @IsNumber()
+  foodId: number;
 
   @IsNumber()
   amount: number;

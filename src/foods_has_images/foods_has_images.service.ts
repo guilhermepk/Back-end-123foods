@@ -19,9 +19,6 @@ export class FoodsHasImagesService {
     private imageRepository: Repository<Images>
   ) {}
 
-  async findAll(): Promise<FoodsHasImages[]> {
-    return this.foodsHasImageRepository.find();
-  }
   async create(createFoodsHasImageDto: CreateFoodsHasImageDto): Promise<FoodsHasImages> {
     const idFoodHasImage = await this.foodsHasImageRepository.findOne({ relations: { food: true, image: true},  where: { food : { id: createFoodsHasImageDto.foodId }, image: { id: createFoodsHasImageDto.imageId}}});
     console.log(idFoodHasImage);
@@ -29,7 +26,6 @@ export class FoodsHasImagesService {
 
     const food = await this.foodRepository.findOne({ where: { id: createFoodsHasImageDto.foodId}});
     if (!food) throw new NotFoundException('Não encontrado food');
-    console.log(food);
     
     const image = await this.imageRepository.findOne({ where: { id: createFoodsHasImageDto.imageId}});
     if (!image) throw new NotFoundException('Não encontrado image');
@@ -42,6 +38,10 @@ export class FoodsHasImagesService {
     // const foods_has_image = this.foodsHasImageRepository.create(createFoodsHasImageDto);
     
     return this.foodsHasImageRepository.save(newFoodHasImage);
+  }
+
+  async findAll(): Promise<FoodsHasImages[]> {
+    return this.foodsHasImageRepository.find();
   }
 
   async findOne(id: number): Promise<FoodsHasImages> {
