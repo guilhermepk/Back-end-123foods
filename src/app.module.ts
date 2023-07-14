@@ -9,9 +9,8 @@ import { PurchasesModule } from './purchases/purchases.module';
 import { ImagesModule } from './images/images.module';
 import { AuthModule } from './auth/auth.module';
 import { FoodsHasImagesModule } from './foods_has_images/foods_has_images.module';
-
+import { diskStorage } from 'multer';
 import { MulterModule } from '@nestjs/platform-express';
-
 
 @Module({
   imports: [
@@ -28,7 +27,17 @@ import { MulterModule } from '@nestjs/platform-express';
     UsersModule,
     PurchasesModule,
     ImagesModule,
-    MulterModule.register({dest:'./upload'}),
+    MulterModule.register({
+      storage: diskStorage({
+        destination: './uploads', // Diretório onde os arquivos serão salvos
+        filename: (req, file, callback) => {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const extension = file.originalname.split('.').pop(); // Obtém a extensão do arquivo
+          const filename = uniqueSuffix + '.' + extension;
+          callback(null, filename);
+        },
+      }),
+    }),
     AuthModule,
     FoodsHasImagesModule,
 

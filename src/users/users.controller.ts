@@ -6,22 +6,29 @@ import { AuthGuard } from '@nestjs/passport';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
-
+const storage = diskStorage({
+  
+  destination: './files',
+  filename: (req, file, callback) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const extension = extname(file.originalname);
+    callback(null, uniqueSuffix + extension);
+  },
+});
 @Controller('users')
 export class UsersController {
   EntityManager: any;
   constructor(private readonly usersService: UsersService) {}
-  // @Post('upload')
-  // @UseInterceptors(FileInterceptor('file'))
-  // uploadFile(@UploadedFile() file: Express.Multer.File) {
-  // console.log(file);
-  // }
+  
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
-  
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: Express.Multer.File, @Body() createUserDto: CreateUserDto) {
+  const fileName = file.filename;
+  createUserDto.image = fileName;
+  const user = await this.usersService.create(createUserDto);
+  return { user, fileName };
+}
  
   
   @Get()
