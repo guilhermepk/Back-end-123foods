@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Render, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Render, NotFoundException, Query } from '@nestjs/common';
 import { FoodsService } from './foods.service';
 import { CreateFoodDto } from './dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
@@ -43,6 +43,10 @@ filterAll(
     throw new NotFoundException('Tipo de filtro inválido');
   }
 }
+@Get('search')
+  async searchFoods(@Query('filterValue') filterValue: string): Promise<Foods[]> {
+    return this.foodsService.search(filterValue);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
