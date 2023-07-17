@@ -37,6 +37,6 @@ export class CreateUserDto {
     @IsString()
     cep: string;
 
-    @IsString()
+
     image: string;
 }

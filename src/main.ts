@@ -11,6 +11,7 @@ async function bootstrap() {
 
   app.use(multer({ dest: './uploads' }).single('file'));
   app.useStaticAssets(join(__dirname,'..','public'));
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), { prefix: '/uploads' });
   
   app.useGlobalPipes(
     new ValidationPipe({

@@ -4,7 +4,8 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Users } from "./entities/users.entity";
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt';
+import * as fs from 'fs-extra';
 @Injectable()
 export class UsersService {
   findById(id: any) {
@@ -20,7 +21,7 @@ export class UsersService {
     user.password=bcrypt.hashSync(createUserDto.password,8)
     return this.userRepository.save(user);
   }
- 
+
   async findAll():Promise<Users[]>{
     return this.userRepository.find();
   }
@@ -50,15 +51,38 @@ export class UsersService {
 
   return updatedUser;
 }
+async updateimage(id:number, updateUserDto:UpdateUserDto): Promise<Users> {
+  const user =await this.userRepository.findOne({where:{id}});
+  if (!user) {
+  throw new NotFoundException('Usuario não encontrado');
+  }
+  
+  user.image = updateUserDto.image;
+const updatedUser=await this.userRepository.save(user);
+
+return updatedUser;
+}
 findByEmail(email: string) {
   return this.userRepository.findOne({ where: { email } });
 }
-  async remove(id:number): Promise<void>{
-    const result= await this.userRepository.delete(id);
-    if(result.affected===0){
-      throw new NotFoundException("Usuário não encontrado");
-    }
+async remove(id: number): Promise<void> {
+  const user = await this.userRepository.findOne({where:{id}});
+  if (!user) {
+    throw new NotFoundException('User not found');
   }
+
+  if (user.image) {
+    const imagePath = './uploads/' + user.image;
+    await fs.remove(imagePath);
+    console.log('Image deleted');
+  }
+
+  const result = await this.userRepository.delete(id);
+  if (result.affected === 0) {
+    throw new NotFoundException('User not found');
+  }
+}
+
   async findOne(email: string): Promise<Users | undefined> {
     return this.userRepository.findOne({ where: { email } });
   }
