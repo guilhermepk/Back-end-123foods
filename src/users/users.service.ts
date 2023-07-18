@@ -73,7 +73,7 @@ async remove(id: number): Promise<void> {
 
   if (user.image) {
     const imagePath = './uploads/' + user.image;
-    await fs.remove(imagePath);
+    await fs.unlink(imagePath);
     console.log('Image deleted');
   }
 

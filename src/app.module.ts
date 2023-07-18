@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { FoodsHasImagesModule } from './foods_has_images/foods_has_images.module';
 import { diskStorage } from 'multer';
 import { MulterModule } from '@nestjs/platform-express';
+import { BannersModule } from './banners/banners.module';
 
 @Module({
   imports: [
@@ -29,10 +30,10 @@ import { MulterModule } from '@nestjs/platform-express';
     ImagesModule,
     MulterModule.register({
       storage: diskStorage({
-        destination: './uploads', // Diretório onde os arquivos serão salvos
+        destination: './uploads', 
         filename: (req, file, callback) => {
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const extension = file.originalname.split('.').pop(); // Obtém a extensão do arquivo
+          const extension = file.originalname.split('.').pop();
           const filename = uniqueSuffix + '.' + extension;
           callback(null, filename);
         },
@@ -40,6 +41,7 @@ import { MulterModule } from '@nestjs/platform-express';
     }),
     AuthModule,
     FoodsHasImagesModule,
+    BannersModule,
 
    
   ],
