@@ -1,5 +1,4 @@
-import { IsArray, IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
-import { Images } from "src/images/entities/images.entity";
+import { IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 
 export class CreateFoodDto{
     @IsNotEmpty()
@@ -9,7 +8,8 @@ export class CreateFoodDto{
     brand: string;
 
     @IsNumber()
-    weight: number;
+    @IsOptional()
+    weight: number = 0;
 
     @IsNotEmpty()
     unit_of_measurement: string;
@@ -17,15 +17,14 @@ export class CreateFoodDto{
     @IsNotEmpty()
     category: string;
 
+    @IsOptional()
     @IsNumber()
-    qtd: number;
+    qtd: number = 0;
 
     @IsNotEmpty()
     description: string;
 
+    @IsOptional()
     @IsNumber()
-    price: number;
-    
-    // @IsArray()
-    // images: Array<Images>
+    price: number = 0;
 }

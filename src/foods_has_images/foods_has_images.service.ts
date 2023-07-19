@@ -22,7 +22,7 @@ export class FoodsHasImagesService {
   async create(createFoodsHasImageDto: CreateFoodsHasImageDto): Promise<FoodsHasImages> {
     const idFoodHasImage = await this.foodsHasImageRepository.findOne({ relations: { food: true, image: true},  where: { food : { id: createFoodsHasImageDto.foodId }, image: { id: createFoodsHasImageDto.imageId}}});
     console.log(idFoodHasImage);
-    if (idFoodHasImage) throw new NotAcceptableException('uma mensagem bunitinha');
+    if (idFoodHasImage) throw new NotAcceptableException('Ja tem essa relação');
 
     const food = await this.foodRepository.findOne({ where: { id: createFoodsHasImageDto.foodId}});
     if (!food) throw new NotFoundException('Não encontrado food');
@@ -35,8 +35,8 @@ export class FoodsHasImagesService {
     newFoodHasImage.food = food;
     newFoodHasImage.image = image;
 
-    // const foods_has_image = this.foodsHasImageRepository.create(createFoodsHasImageDto);
-    
+    //const foods_has_image = this.foodsHasImageRepository.create(createFoodsHasImageDto);
+
     return this.foodsHasImageRepository.save(newFoodHasImage);
   }
 

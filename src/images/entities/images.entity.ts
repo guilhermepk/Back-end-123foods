@@ -15,8 +15,6 @@ export class Images {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
-  name: string;
-  @Column()
   path: string;
 
   @OneToMany(() => FoodsHasImages, (foods_has_images) => foods_has_images.image)

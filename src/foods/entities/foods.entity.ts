@@ -12,7 +12,7 @@ export class Foods {
   @Column()
   brand: string;
   @Column({ type: 'numeric'})
-  weight:number;
+  weight: number;
   @Column()
   unit_of_measurement: string;
   @Column()
@@ -22,7 +22,7 @@ export class Foods {
   @Column()
   description: string;
   @Column({ type: 'numeric'})
-  price: Number;
+  price: number;
 
   @OneToMany(() => Purchases, (purchase) => purchase.food)
   purchases: Purchases[]
