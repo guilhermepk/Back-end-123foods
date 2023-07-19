@@ -81,7 +81,7 @@ export class FoodsService {
     food.weight = updateFoodDto.weight;
     food.unit_of_measurement = updateFoodDto.unit_of_measurement;
     food.category = updateFoodDto.category;
-    food.qtd = updateFoodDto.qtd;
+    food.amount = updateFoodDto.amount;
     food.description = updateFoodDto.description;
     food.price = updateFoodDto.price;
     // food.images = updateFoodDto.images;

@@ -18,7 +18,7 @@ export class Foods {
   @Column()
   category: string;
   @Column()
-  qtd: number;
+  amount: number;
   @Column()
   description: string;
   @Column({ type: 'numeric'})

@@ -19,7 +19,7 @@ export class CreateFoodDto{
 
     @IsOptional()
     @IsNumber()
-    qtd: number = 0;
+    amount: number = 0;
 
     @IsNotEmpty()
     description: string;
