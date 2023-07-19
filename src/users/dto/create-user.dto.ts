@@ -36,6 +36,8 @@ export class CreateUserDto {
 
     @IsString()
     cep: string;
+    @IsString()
+    numberhouse: string;
 
 
     image: string;

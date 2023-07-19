@@ -13,5 +13,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     state?:string;
     street?:string;
     cep?:string;
-  image?: string;
+    image?: string;
+    numberhouse?: string;
 }
