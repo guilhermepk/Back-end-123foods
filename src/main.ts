@@ -22,7 +22,7 @@ async function bootstrap() {
   );
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  //app.use(cors());
+  app.use(cors());
   await app.listen(3000);
 }
 
