@@ -7,9 +7,9 @@ export class CreateFoodDto{
     @IsNotEmpty()
     brand: string;
 
-    @IsNumber()
-    @IsOptional()
-    weight: number = 0;
+    // @IsNumber(undefined, { message: "O valor da propriedade 'weight' deve ser um número." })
+    @IsNotEmpty()
+    weight: number;
 
     @IsNotEmpty()
     unit_of_measurement: string;
@@ -17,14 +17,15 @@ export class CreateFoodDto{
     @IsNotEmpty()
     category: string;
 
-    @IsOptional()
-    @IsNumber()
-    amount: number = 0;
+    
+    // @IsNumber(undefined, { message: "O valor da propriedade 'amount' deve ser um número." })
+    @IsNotEmpty()
+    amount: number;
 
     @IsNotEmpty()
     description: string;
 
-    @IsOptional()
-    @IsNumber()
-    price: number = 0;
+    @IsNotEmpty()
+    // @IsNumber(undefined, { message: "O valor da propriedade 'price' deve ser um número." })
+    price: number;
 }
