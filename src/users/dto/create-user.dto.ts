@@ -40,6 +40,6 @@ export class CreateUserDto {
     @IsString()
     numberhouse: string;
 
-    @IsNotEmpty()
+   
     image: string;
 }

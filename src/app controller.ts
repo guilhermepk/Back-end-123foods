@@ -1,8 +1,6 @@
 import { Controller, Get, Post, Res, UseGuards,Request } from '@nestjs/common';
 import { Response } from 'express';
 import { join } from 'path';
-
-import { Users } from './users/entities/users.entity';
 import { AuthGuard } from '@nestjs/passport';
 @Controller()
 export class AppController {

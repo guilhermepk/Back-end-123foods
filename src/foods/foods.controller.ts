@@ -20,54 +20,55 @@ export class FoodsController {
   //   console.log(files);
   // }
 
-  @Post()
-  @UseInterceptors(FilesInterceptor('files', 5))
-  async create(@UploadedFiles() files: Array<Express.Multer.File>, @Body() createFoodDto: CreateFoodDto){
-    const food = await this.foodsService.create(createFoodDto);
-
-    console.log(files)
-    
-    if (!files) {
-      throw new BadRequestException('No files uploaded');
-    }
-
-    const relations = [];
-
-    for (let index = 0; index < files.length; index++){
-      const file = files[index];
-
-      const fileName = `${uuidv4()}-${file.originalname}`;
-      const uploadPath = '/uploads/' + fileName;
-      
-      await fs.move(file.path, uploadPath);
-      
-      const image = await this.foodsService.createImage(fileName);
-  
-      const relation = await this.foodsService.createFoodsHasImages(food.id, image.id)
-      relations.push(relation)
-    }
-
-    return { food, files, relations };
-  }
-
   // @Post()
-  // async create(@UploadedFile() file: Express.Multer.File, @Body() createFoodDto: CreateFoodDto){
-  //   if (!file) {
-  //     throw new BadRequestException('No file uploaded');
-  //   }
-
-  //   const fileName = `${uuidv4()}-${file.originalname}`;
-  //   const uploadPath = '/uploads/' + fileName;
-
-  //   await fs.move(file.path, uploadPath);
+  // @UseInterceptors(FilesInterceptor('files', 5))
+  // async create(@UploadedFiles() files: Array<Express.Multer.File>, @Body() createFoodDto: CreateFoodDto){
     
   //   const food = await this.foodsService.create(createFoodDto);
-  //   const image = await this.foodsService.createImage(fileName);
 
-  //   const relation = await this.foodsService.createFoodsHasImages(food.id, image.id)
+  //   console.log(files)
     
-  //   return { food, image, relation };
+  //   if (!files) {
+  //     throw new BadRequestException('No files uploaded');
+  //   }
+
+  //   const relations = [];
+
+  //   for (let index = 0; index < files.length; index++){
+  //     const file = files[index];
+
+  //     const fileName = `${uuidv4()}-${file.originalname}`;
+  //     const uploadPath = '/uploads/' + fileName;
+      
+  //     await fs.move(file.path, uploadPath);
+      
+  //     const image = await this.foodsService.createImage(fileName);
+  
+  //     const relation = await this.foodsService.createFoodsHasImages(food.id, image.id)
+  //     relations.push(relation)
+  //   }
+
+  //   return { food, files, relations };
   // }
+
+  @Post()
+  async create(@UploadedFile() file: Express.Multer.File, @Body() createFoodDto: CreateFoodDto){
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+
+    const fileName = `${uuidv4()}-${file.originalname}`;
+    const uploadPath = '/uploads/' + fileName;
+
+    await fs.move(file.path, uploadPath);
+    
+    const food = await this.foodsService.create(createFoodDto);
+    const image = await this.foodsService.createImage(fileName);
+
+    const relation = await this.foodsService.createFoodsHasImages(food.id, image.id)
+    
+    return { food, image, relation };
+  }
   
   @Get()
   findAll() {
