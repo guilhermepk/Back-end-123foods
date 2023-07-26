@@ -24,6 +24,8 @@ export class FoodsController {
   @UseInterceptors(FilesInterceptor('files', 5))
   async create(@UploadedFiles() files: Array<Express.Multer.File>, @Body() createFoodDto: CreateFoodDto){
     const food = await this.foodsService.create(createFoodDto);
+
+    console.log(files)
     
     if (!files) {
       throw new BadRequestException('No files uploaded');

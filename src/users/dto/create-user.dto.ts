@@ -2,7 +2,7 @@ import { IsBoolean, IsDate, IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from 
 
 export class CreateUserDto {
     @IsBoolean()
-    admin: boolean= false;
+    admin: boolean = false;
 
     @IsNotEmpty()
     name: string;
@@ -36,9 +36,10 @@ export class CreateUserDto {
 
     @IsString()
     cep: string;
+
     @IsString()
     numberhouse: string;
 
-
+    @IsNotEmpty()
     image: string;
 }
