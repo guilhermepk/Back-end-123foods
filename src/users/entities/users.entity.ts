@@ -30,6 +30,8 @@ export class Users {
   @Column()
   cep:string;
   @Column()
+  numberhouse:string;
+  @Column()
   image?:string;
 
   @OneToMany(() => Purchases, (purchase) => purchase.user)
