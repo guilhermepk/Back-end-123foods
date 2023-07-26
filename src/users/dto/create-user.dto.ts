@@ -36,12 +36,9 @@ export class CreateUserDto {
 
     @IsString()
     cep: string;
-<<<<<<< HEAD
 
     @IsString()
     numberhouse: string;
-=======
->>>>>>> parent of a3d4fcb (Merge branch 'main' into criando-envio-de-imagens-nos-produtos)
 
     @IsNotEmpty()
     image: string;

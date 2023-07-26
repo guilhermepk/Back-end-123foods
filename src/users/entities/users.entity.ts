@@ -30,13 +30,9 @@ export class Users {
   @Column()
   cep:string;
   @Column()
-<<<<<<< HEAD
   numberhouse:string;
   @Column()
   image:string;
-=======
-  image?:string;
->>>>>>> parent of a3d4fcb (Merge branch 'main' into criando-envio-de-imagens-nos-produtos)
 
   @OneToMany(() => Purchases, (purchase) => purchase.user)
   purchases: Purchases[]
