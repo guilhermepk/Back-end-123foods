@@ -4,9 +4,7 @@ import { Between, ILike, Repository } from 'typeorm';
 import { Foods } from './entities/foods.entity';
 import { CreateFoodDto } from './dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
-import { FoodsHasImages } from "src/foods_has_images/entities/foods_has_image.entity";
 import { Images } from "src/images/entities/images.entity";
-import { CreateImageDto } from "src/images/dto/create-image.dto";
 
 @Injectable()
 
@@ -14,8 +12,6 @@ export class FoodsService {
   constructor(
     @InjectRepository(Foods)
     private foodRepository: Repository<Foods>,
-    @InjectRepository(FoodsHasImages)
-    private foodsHasImageRepository: Repository<FoodsHasImages>,
     @InjectRepository(Images)
     private imageRepository: Repository<Images>
   ) {}
@@ -25,19 +21,12 @@ export class FoodsService {
     return this.foodRepository.save(food);
   }
 
-  async createImage(path: string): Promise<Images> {
+  async createImage(path: string, foodId): Promise<Images> {
     const newImage = new Images();
-    newImage.path = path
+    newImage.path = path;
+    newImage.food = foodId;
 
-    return this.imageRepository.save(newImage)
-  }
-
-  async createFoodsHasImages(foodId, imageId): Promise<FoodsHasImages> {
-    const newFoodsHasImage = new FoodsHasImages();
-    newFoodsHasImage.food = foodId
-    newFoodsHasImage.image = imageId
-
-    return this.foodsHasImageRepository.save(newFoodsHasImage)
+    return this.imageRepository.save(newImage);
   }
 
   async priceAll( minPrice: number, maxPrice: number): Promise<Foods[]> {

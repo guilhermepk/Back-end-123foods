@@ -1,5 +1,5 @@
 
-import { FoodsHasImages } from 'src/foods_has_images/entities/foods_has_image.entity';
+import { Foods } from 'src/foods/entities/foods.entity';
 import {
     Entity,
     Column,
@@ -7,7 +7,8 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     DeleteDateColumn,
-    OneToMany
+    OneToMany,
+    ManyToOne
 } from 'typeorm';
 
 @Entity()
@@ -17,8 +18,9 @@ export class Images {
   @Column()
   path: string;
 
-  @OneToMany(() => FoodsHasImages, (foods_has_images) => foods_has_images.image)
-  foods_has_images: FoodsHasImages[]
+  @ManyToOne(() => Foods, (food) => food.images)
+  food: Foods
+
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

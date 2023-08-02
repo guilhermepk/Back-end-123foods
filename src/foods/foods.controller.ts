@@ -5,51 +5,11 @@ import { UpdateFoodDto } from './dto/update-food.dto';
 import { Foods } from './entities/foods.entity';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs-extra';
-import { FilesInterceptor } from '@nestjs/platform-express';
-import { UseInterceptors } from '@nestjs/common/decorators';
 
 
 @Controller('foods')
 export class FoodsController {
   constructor(private readonly foodsService: FoodsService) {}
-
-  
-  // @Post('upload')
-  // @UseInterceptors(FilesInterceptor('files', 5))
-  // uploadFile(@UploadedFiles() files: Array<Express.Multer.File>) {
-  //   console.log(files);
-  // }
-
-  // @Post()
-  // @UseInterceptors(FilesInterceptor('files', 5))
-  // async create(@UploadedFiles() files: Array<Express.Multer.File>, @Body() createFoodDto: CreateFoodDto){
-    
-  //   const food = await this.foodsService.create(createFoodDto);
-
-  //   console.log(files)
-    
-  //   if (!files) {
-  //     throw new BadRequestException('No files uploaded');
-  //   }
-
-  //   const relations = [];
-
-  //   for (let index = 0; index < files.length; index++){
-  //     const file = files[index];
-
-  //     const fileName = `${uuidv4()}-${file.originalname}`;
-  //     const uploadPath = '/uploads/' + fileName;
-      
-  //     await fs.move(file.path, uploadPath);
-      
-  //     const image = await this.foodsService.createImage(fileName);
-  
-  //     const relation = await this.foodsService.createFoodsHasImages(food.id, image.id)
-  //     relations.push(relation)
-  //   }
-
-  //   return { food, files, relations };
-  // }
 
   @Post()
   async create(@UploadedFile() file: Express.Multer.File, @Body() createFoodDto: CreateFoodDto){
@@ -63,11 +23,9 @@ export class FoodsController {
     await fs.move(file.path, uploadPath);
     
     const food = await this.foodsService.create(createFoodDto);
-    const image = await this.foodsService.createImage(fileName);
-
-    const relation = await this.foodsService.createFoodsHasImages(food.id, image.id)
+    const image = await this.foodsService.createImage(fileName, food.id);
     
-    return { food, image, relation };
+    return { food, image };
   }
   
   @Get()
