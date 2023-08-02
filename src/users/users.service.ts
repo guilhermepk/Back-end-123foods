@@ -45,7 +45,6 @@ export class UsersService {
     user.street=updateUserDto.street;
     user.state=updateUserDto.state;
     user.cep=updateUserDto.cep;
-    user.numberhouse=updateUserDto.numberhouse;
 
 
   const updatedUser=await this.userRepository.save(user);

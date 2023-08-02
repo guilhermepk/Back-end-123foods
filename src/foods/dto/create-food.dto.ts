@@ -1,5 +1,4 @@
-import { IsArray, IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
-import { Images } from "src/images/entities/images.entity";
+import { IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 
 export class CreateFoodDto{
     @IsNotEmpty()
@@ -8,7 +7,8 @@ export class CreateFoodDto{
     @IsNotEmpty()
     brand: string;
 
-    @IsNumber()
+    // @IsNumber(undefined, { message: "O valor da propriedade 'weight' deve ser um número." })
+    @IsNotEmpty()
     weight: number;
 
     @IsNotEmpty()
@@ -17,15 +17,15 @@ export class CreateFoodDto{
     @IsNotEmpty()
     category: string;
 
-    @IsNumber()
-    qtd: number;
+    
+    // @IsNumber(undefined, { message: "O valor da propriedade 'amount' deve ser um número." })
+    @IsNotEmpty()
+    amount: number;
 
     @IsNotEmpty()
     description: string;
 
-    @IsNumber()
+    @IsNotEmpty()
+    // @IsNumber(undefined, { message: "O valor da propriedade 'price' deve ser um número." })
     price: number;
-    
-    // @IsArray()
-    // images: Array<Images>
 }

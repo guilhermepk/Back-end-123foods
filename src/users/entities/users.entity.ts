@@ -6,7 +6,7 @@ export class Users {
   @PrimaryGeneratedColumn()
   id: number;
   @Column({ default: false })
-  admin?: boolean;
+  admin: boolean;
   @Column()
   name: string;
   @Column()
@@ -16,7 +16,7 @@ export class Users {
   @Column()
   cpf:string;
   @Column()
-  phone?:string;
+  phone:string;
   @Column()
   email:string;
   @Column()
@@ -32,7 +32,7 @@ export class Users {
   @Column()
   numberhouse:string;
   @Column()
-  image?:string;
+  image:string;
 
   @OneToMany(() => Purchases, (purchase) => purchase.user)
   purchases: Purchases[]

@@ -8,7 +8,6 @@ import { AppController } from './app controller';
 import { PurchasesModule } from './purchases/purchases.module';
 import { ImagesModule } from './images/images.module';
 import { AuthModule } from './auth/auth.module';
-import { FoodsHasImagesModule } from './foods_has_images/foods_has_images.module';
 import { diskStorage } from 'multer';
 import { MulterModule } from '@nestjs/platform-express';
 import { BannersModule } from './banners/banners.module';
@@ -40,7 +39,6 @@ import { BannersModule } from './banners/banners.module';
       }),
     }),
     AuthModule,
-    FoodsHasImagesModule,
     BannersModule,
 
    

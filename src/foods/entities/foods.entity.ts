@@ -1,5 +1,4 @@
 
-import { FoodsHasImages } from 'src/foods_has_images/entities/foods_has_image.entity';
 import { Images } from 'src/images/entities/images.entity';
 import { Purchases } from 'src/purchases/entities/purchases.entity';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, OneToMany, OneToOne, JoinColumn, JoinTable } from 'typeorm';
@@ -12,26 +11,22 @@ export class Foods {
   @Column()
   brand: string;
   @Column({ type: 'numeric'})
-  weight:number;
+  weight: number;
   @Column()
   unit_of_measurement: string;
   @Column()
   category: string;
   @Column()
-  qtd: number;
+  amount: number;
   @Column()
   description: string;
   @Column({ type: 'numeric'})
-  price: Number;
+  price: number;
 
   @OneToMany(() => Purchases, (purchase) => purchase.food)
   purchases: Purchases[]
-  @OneToMany(() => FoodsHasImages, (foods_has_images) => foods_has_images.food)
-  foods_has_images: FoodsHasImages[]
-
-  // @ManyToMany(() => Images)
-  // @JoinTable()
-  // images: Images[]
+  @OneToMany(() => Images, (image) => image.food)
+  images: Images[]
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

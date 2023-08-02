@@ -30,7 +30,7 @@ export class ImagesService {
     if (!image) {
       throw new NotFoundException('Image not found');
     }
-    image.name = updateImageDto.name;
+    
     image.path = updateImageDto.path;
 
     const updatedImage = await this.imageRepository.save(image);

@@ -1,8 +1,9 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsNumber } from "class-validator";
 
 export class CreateImageDto {
     @IsNotEmpty()
-    name: string;
-    @IsNotEmpty()
     path: string;
+    
+    @IsNumber()
+    foodId: number;
 }

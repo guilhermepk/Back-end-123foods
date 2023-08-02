@@ -4,6 +4,7 @@ import { Between, ILike, Repository } from 'typeorm';
 import { Foods } from './entities/foods.entity';
 import { CreateFoodDto } from './dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
+import { Images } from "src/images/entities/images.entity";
 
 @Injectable()
 
@@ -11,7 +12,23 @@ export class FoodsService {
   constructor(
     @InjectRepository(Foods)
     private foodRepository: Repository<Foods>,
+    @InjectRepository(Images)
+    private imageRepository: Repository<Images>
   ) {}
+
+  async create(createFoodDto: CreateFoodDto): Promise<Foods> {
+    const food = this.foodRepository.create(createFoodDto);
+    return this.foodRepository.save(food);
+  }
+
+  async createImage(path: string, foodId): Promise<Images> {
+    const newImage = new Images();
+    newImage.path = path;
+    newImage.food = foodId;
+
+    return this.imageRepository.save(newImage);
+  }
+
   async priceAll( minPrice: number, maxPrice: number): Promise<Foods[]> {
     return this.foodRepository.find({
       where: {
@@ -38,10 +55,6 @@ export class FoodsService {
   async findAll(): Promise<Foods[]> {
     return this.foodRepository.find();
   }
-  async create(createFoodDto: CreateFoodDto): Promise<Foods> {
-    const food = this.foodRepository.create(createFoodDto);
-    return this.foodRepository.save(food);
-  }
 
   async findOne(id: number): Promise<Foods> {
     return this.foodRepository.findOne({ where: { id } });
@@ -57,7 +70,7 @@ export class FoodsService {
     food.weight = updateFoodDto.weight;
     food.unit_of_measurement = updateFoodDto.unit_of_measurement;
     food.category = updateFoodDto.category;
-    food.qtd = updateFoodDto.qtd;
+    food.amount = updateFoodDto.amount;
     food.description = updateFoodDto.description;
     food.price = updateFoodDto.price;
     // food.images = updateFoodDto.images;
