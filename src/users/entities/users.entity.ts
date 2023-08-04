@@ -32,6 +32,8 @@ export class Users {
   @Column()
   numberhouse:string;
   @Column()
+  complement:string;
+  @Column()
   image:string;
 
   @OneToMany(() => Purchases, (purchase) => purchase.user)
