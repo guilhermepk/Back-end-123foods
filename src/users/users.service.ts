@@ -45,6 +45,7 @@ export class UsersService {
     user.city=updateUserDto.city;
     user.street=updateUserDto.street;
     user.state=updateUserDto.state;
+    user.neighborhood=updateUserDto.neighborhood;
     user.cep=updateUserDto.cep;
 
 

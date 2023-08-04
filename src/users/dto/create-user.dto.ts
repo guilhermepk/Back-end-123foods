@@ -17,7 +17,8 @@ export class CreateUserDto {
     cpf: string;
     @IsString()
     complement: string;
-
+    @IsString()
+    neighborhood:string;
     @IsPhoneNumber()
     phone: string;
 
