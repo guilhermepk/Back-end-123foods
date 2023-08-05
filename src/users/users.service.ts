@@ -38,12 +38,14 @@ export class UsersService {
     user.name=updateUserDto.name;
     user.image = updateUserDto.image;
     user.cpf=updateUserDto.cpf;
+    user.complement=updateUserDto.complement;
     user.phone=updateUserDto.phone;
     user.email=updateUserDto.email;
     user.password=bcrypt.hashSync(updateUserDto.password,8);
     user.city=updateUserDto.city;
     user.street=updateUserDto.street;
     user.state=updateUserDto.state;
+    user.neighborhood=updateUserDto.neighborhood;
     user.cep=updateUserDto.cep;
 
 

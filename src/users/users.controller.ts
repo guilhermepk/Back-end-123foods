@@ -34,20 +34,23 @@ const storage = diskStorage({
 export class UsersController {
   EntityManager: any;
   constructor(private readonly usersService: UsersService) {}
-  
+
   @Post()
-  async uploadFile(@UploadedFile() file: Express.Multer.File, @Body() createUserDto: CreateUserDto) {
-    if (!file) {
-      throw new BadRequestException('No file uploaded');
+  async uploadFile(
+      @UploadedFile() file: Express.Multer.File, // Torna o campo file opcional
+      @Body() createUserDto: CreateUserDto,
+  ) {
+    let fileName;
+    if (file) {
+      fileName = `${uuidv4()}-${file.originalname}`;
+      const uploadPath = './uploads/' + fileName;
+      await fs.move(file.path, uploadPath);
+      createUserDto.image = fileName;
+    } else {
+      createUserDto.image = 'imagem-padrao.gif';
     }
 
-    const fileName = `${uuidv4()}-${file.originalname}`;
-    const uploadPath = './uploads/' + fileName;
-
-    await fs.move(file.path, uploadPath);
-    createUserDto.image = fileName;
     const user = await this.usersService.create(createUserDto);
-
     return { user, fileName };
   }
   
