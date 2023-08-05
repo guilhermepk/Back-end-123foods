@@ -16,6 +16,7 @@ export class ImagesService {
   async findAll(): Promise<Images[]> {
     return this.imageRepository.find();
   }
+
   async create(createImageDto: CreateImageDto): Promise<Images> {
     const image = this.imageRepository.create(createImageDto);
     return this.imageRepository.save(image);
@@ -32,6 +33,7 @@ export class ImagesService {
     }
     
     image.path = updateImageDto.path;
+    image.food.id = updateImageDto.foodId;
 
     const updatedImage = await this.imageRepository.save(image);
   

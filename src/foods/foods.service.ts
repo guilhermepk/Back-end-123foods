@@ -73,7 +73,6 @@ export class FoodsService {
     food.amount = updateFoodDto.amount;
     food.description = updateFoodDto.description;
     food.price = updateFoodDto.price;
-    // food.images = updateFoodDto.images;
 
     const updatedFood = await this.foodRepository.save(food);
   
