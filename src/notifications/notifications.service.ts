@@ -1,26 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import { CreateNotificationDto } from './dto/create-notification.dto';
-import { UpdateNotificationDto } from './dto/update-notification.dto';
+import {InjectRepository} from "@nestjs/typeorm";
+import {Repository} from "typeorm";
+import {Notifications} from "./entities/notification.entity";
 
 @Injectable()
 export class NotificationsService {
-  create(createNotificationDto: CreateNotificationDto) {
-    return 'This action adds a new notification';
+  constructor(
+      @InjectRepository(Notifications)
+      private notificationRepository:Repository<Notifications>
+  ){}
+   async create(createNotificationDto: CreateNotificationDto):Promise<Notifications> {
+    const notification   =this.notificationRepository.create(createNotificationDto);
+    return this.notificationRepository.save(notification);
   }
 
-  findAll() {
-    return `This action returns all notifications`;
+  async findAll():Promise<Notifications[]> {
+    return this.notificationRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} notification`;
-  }
 
-  update(id: number, updateNotificationDto: UpdateNotificationDto) {
-    return `This action updates a #${id} notification`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} notification`;
+  async remove(id: number):Promise<void> {
+    const notifications = await this.notificationRepository.findOne({where:{id}});
+    if(!notifications){
+      throw new NotFoundException('notificação não encontrada')
+    }
+    const result =await this.notificationRepository.delete(id);
+
   }
 }

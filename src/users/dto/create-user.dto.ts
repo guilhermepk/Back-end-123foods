@@ -1,5 +1,6 @@
-import { IsBoolean, IsDate, IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from "class-validator";
-
+import {IsBoolean, IsDate, IsDateString, IsEmail, IsNotEmpty, IsPhoneNumber, Matches, IsString, Validate} from "class-validator";
+import { IsAgeValidConstraint } from './is-age-valid.validator';
+import { IsCpfValidConstraint } from './is-cpf-valid.validator';
 export class CreateUserDto {
     @IsBoolean()
     admin: boolean = false;
@@ -7,18 +8,24 @@ export class CreateUserDto {
     @IsNotEmpty()
     name: string;
 
-    @IsString()
+
+    @IsDateString()
+    @Validate(IsAgeValidConstraint)
     date_of_birth: string;
     
     @IsString()
     gender: string;
 
+    @Validate(IsCpfValidConstraint)
     @IsString()
     cpf: string;
+
     @IsString()
     complement: string;
+
     @IsString()
-    neighborhood:string;
+    district:string;
+
     @IsPhoneNumber()
     phone: string;
 
@@ -26,6 +33,9 @@ export class CreateUserDto {
     email: string;
 
     @IsNotEmpty()
+    // @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    //     message: 'senha muito fraca',
+    // })
     password: string;
 
     @IsString()

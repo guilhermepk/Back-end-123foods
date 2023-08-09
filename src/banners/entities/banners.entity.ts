@@ -7,5 +7,8 @@ export class Banners {
   image:string;
   @Column()
   alt:string;
+  @Column()
+  link:string;
+
 
 }

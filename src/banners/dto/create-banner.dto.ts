@@ -4,4 +4,6 @@ export class CreateBannerDto {
     image:string
     @IsString()
     alt:string
+    @IsString()
+    link:string
 }

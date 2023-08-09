@@ -45,7 +45,7 @@ export class UsersService {
     user.city=updateUserDto.city;
     user.street=updateUserDto.street;
     user.state=updateUserDto.state;
-    user.neighborhood=updateUserDto.neighborhood;
+    user.district=updateUserDto.district;
     user.cep=updateUserDto.cep;
 
 
@@ -70,7 +70,7 @@ findByEmail(email: string) {
 async remove(id: number): Promise<void> {
   const user = await this.userRepository.findOne({where:{id}});
   if (!user) {
-    throw new NotFoundException('User not found');
+    throw new NotFoundException('Usuario não encontrado');
   }
 
   if (user.image) {

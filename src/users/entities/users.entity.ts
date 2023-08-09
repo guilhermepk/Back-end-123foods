@@ -34,7 +34,7 @@ export class Users {
   @Column()
   complement:string;
   @Column()
-  neighborhood:string;
+  district:string;
   @Column()
   image:string;
 
