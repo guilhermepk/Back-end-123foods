@@ -12,13 +12,15 @@ export class FoodsController {
   constructor(private readonly foodsService: FoodsService) {}
 
   @Post()
-  async create(@UploadedFile() file: Express.Multer.File, @Body() createFoodDto: CreateFoodDto){
+  async create(
+      @UploadedFile() file: Express.Multer.File,
+      @Body() createFoodDto: CreateFoodDto){
     if (!file) {
       throw new BadRequestException('No file uploaded');
     }
 
     const fileName = `${uuidv4()}-${file.originalname}`;
-    const uploadPath = '/uploads/' + fileName;
+    const uploadPath = './uploads/' + fileName;
 
     await fs.move(file.path, uploadPath);
     

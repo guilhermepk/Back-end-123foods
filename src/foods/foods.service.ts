@@ -52,14 +52,18 @@ export class FoodsService {
     return this.foodRepository.find({ where: { [filterType]: ILike(`%${filterValue}%`) } });
   }
 
-  async findAll(): Promise<Foods[]> {
-    return this.foodRepository.find();
-  }
-
   async findOne(id: number): Promise<Foods> {
-    return this.foodRepository.findOne({ where: { id } });
+    return this.foodRepository.findOne({
+      where: { id },
+      relations: ['images'], // Load associated images
+    });
   }
 
+  async findAll(): Promise<Foods[]> {
+    return this.foodRepository.find({
+      relations: ['images'],
+    });
+  }
   async update(id: number, updateFoodDto: UpdateFoodDto): Promise<Foods> {
     const food = await this.foodRepository.findOne({ where: { id } });
     if (!food) {

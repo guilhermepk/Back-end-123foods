@@ -16,28 +16,21 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs-extra';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import {AuthService} from "../auth/auth.service";
 
-const storage = diskStorage({
-  destination: './files',
-  filename: (req, file, callback) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const extension = extname(file.originalname);
-    callback(null, uniqueSuffix + extension);
-  },
-});
 
 @Controller('users')
 export class UsersController {
   EntityManager: any;
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService
+  ,private authService:AuthService) {}
 
   @Post()
   async uploadFile(
-      @UploadedFile() file: Express.Multer.File, // Torna o campo file opcional
+      @UploadedFile() file: Express.Multer.File,
       @Body() createUserDto: CreateUserDto,
   ) {
     let fileName;
@@ -53,12 +46,13 @@ export class UsersController {
     const user = await this.usersService.create(createUserDto);
     return { user, fileName };
   }
-  
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.usersService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOneById(+id);
@@ -93,6 +87,6 @@ export class UsersController {
   @UseGuards(AuthGuard('local'))
  @Post('login')
  async login(@Request() req){
-  return req.user;
+  return this.authService.login(req.user);
  }
 }

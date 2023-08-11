@@ -15,7 +15,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
-    FoodsModule,UsersModule,
+    FoodsModule,
     
     ConfigModule.forRoot({
       isGlobal: true,
@@ -25,7 +25,6 @@ import { NotificationsModule } from './notifications/notifications.module';
       inject: [PostgresConfigService],
     }),
     FoodsModule,
-    UsersModule,
     PurchasesModule,
     ImagesModule,
     MulterModule.register({
