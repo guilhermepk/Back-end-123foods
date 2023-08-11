@@ -8,7 +8,6 @@ export class CreateUserDto {
     @IsNotEmpty()
     name: string;
 
-
     @IsDateString()
     @Validate(IsAgeValidConstraint)
     date_of_birth: string;
