@@ -13,6 +13,7 @@ export class AuthService {
                 private tokenService: TokenService){}
     async validateUser(email: string, password: string): Promise<any> {
         const user = await this.usersService.findOne(email);
+        //console.log(user);
         if (user && bcrypt.compareSync(password, user.password)) {
 
             const {password, ...result} = user;
@@ -22,12 +23,16 @@ export class AuthService {
         }
         return null;
     }
+
     async login(user:any) {
-        const payload = {username: user.username, sub: user.userId};
+
+        const payload = {username: user.name, sub: user.id};
+        console.log('payload:', payload)
         const token = this.jwtService.sign(payload)
         this.tokenService.save(token, user.email)
         return {
             access_token: this.jwtService.sign(payload),
+
         };
     }
     async loginToken(token: string) {
