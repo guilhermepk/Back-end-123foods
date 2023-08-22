@@ -10,7 +10,7 @@ import {
   UseGuards,
   UploadedFile,
   //UseInterceptors,
-  BadRequestException
+  BadRequestException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,19 +19,20 @@ import { AuthGuard } from '@nestjs/passport';
 import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs-extra';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import {AuthService} from "../auth/auth.service";
-
+import { AuthService } from '../auth/auth.service';
 
 @Controller('users')
 export class UsersController {
   EntityManager: any;
-  constructor(private readonly usersService: UsersService
-  ,private authService:AuthService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   @Post()
   async uploadFile(
-      @UploadedFile() file: Express.Multer.File,
-      @Body() createUserDto: CreateUserDto,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createUserDto: CreateUserDto,
   ) {
     let fileName;
     if (file) {
@@ -52,14 +53,18 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
- //@UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOneById(+id);
   }
 
   @Patch(':id/upload')
-  async uploadupdateFile(@Param('id') id: string, @UploadedFile() file: Express.Multer.File, @Body() updateUserDto: UpdateUserDto) {
+  async uploadupdateFile(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     if (!file) {
       throw new BadRequestException('No file uploaded');
     }
@@ -85,8 +90,8 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard('local'))
- @Post('login')
- async login(@Request() req){
-  return this.authService.login(req.user);
- }
+  @Post('login')
+  async login(@Request() req) {
+    return this.authService.login(req.user);
+  }
 }

@@ -1,6 +1,14 @@
-
 import { Purchases } from 'src/purchases/entities/purchases.entity';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToOne, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  OneToOne,
+  OneToMany,
+} from 'typeorm';
 @Entity()
 export class Users {
   @PrimaryGeneratedColumn()
@@ -10,36 +18,22 @@ export class Users {
   @Column()
   name: string;
   @Column()
-  date_of_birth?:string;
+  date_of_birth?: string;
   @Column()
-  gender:string;
+  gender: string;
   @Column()
-  cpf:string;
+  cpf: string;
   @Column()
-  phone:string;
+  phone: string;
   @Column()
-  email:string;
+  email: string;
   @Column()
-  password:string;
+  password: string;
   @Column()
-  city:string;
-  @Column()
-  street:string;
-  @Column()
-  state:string;
-  @Column()
-  cep:string;
-  @Column()
-  numberhouse:string;
-  @Column()
-  complement:string;
-  @Column()
-  district:string;
-  @Column()
-  image:string;
+  image: string;
 
   @OneToMany(() => Purchases, (purchase) => purchase.user)
-  purchases: Purchases[]
+  purchases: Purchases[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

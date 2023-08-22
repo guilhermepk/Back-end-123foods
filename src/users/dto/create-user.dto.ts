@@ -1,57 +1,45 @@
-import {IsBoolean, IsDate, IsDateString, IsEmail, IsNotEmpty, IsPhoneNumber, Matches, IsString, Validate} from "class-validator";
+import {
+  IsBoolean,
+  IsDate,
+  IsDateString,
+  IsEmail,
+  IsNotEmpty,
+  IsPhoneNumber,
+  Matches,
+  IsString,
+  Validate,
+} from 'class-validator';
 import { IsAgeValidConstraint } from './is-age-valid.validator';
 import { IsCpfValidConstraint } from './is-cpf-valid.validator';
 export class CreateUserDto {
-    @IsBoolean()
-    admin: boolean = false;
+  @IsBoolean()
+  admin = false;
 
-    @IsNotEmpty()
-    name: string;
+  @IsNotEmpty()
+  name: string;
 
-    @IsDateString()
-    @Validate(IsAgeValidConstraint)
-    date_of_birth: string;
-    
-    @IsString()
-    gender: string;
+  @IsDateString()
+  @Validate(IsAgeValidConstraint)
+  date_of_birth: string;
 
-    @Validate(IsCpfValidConstraint)
-    @IsString()
-    cpf: string;
+  @IsString()
+  gender: string;
 
-    @IsString()
-    complement: string;
+  @Validate(IsCpfValidConstraint)
+  @IsString()
+  cpf: string;
 
-    @IsString()
-    district:string;
+  @IsPhoneNumber()
+  phone: string;
 
-    @IsPhoneNumber()
-    phone: string;
+  @IsEmail()
+  email: string;
 
-    @IsEmail()
-    email: string;
+  @IsNotEmpty()
+  // @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+  //     message: 'senha muito fraca',
+  // })
+  password: string;
 
-    @IsNotEmpty()
-    // @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    //     message: 'senha muito fraca',
-    // })
-    password: string;
-
-    @IsString()
-    city: string;
-
-    @IsString()
-    street: string;
-
-    @IsString()
-    state: string;
-
-    @IsString()
-    cep: string;
-
-    @IsString()
-    numberhouse: string;
-
-   
-    image: string;
+  image: string;
 }

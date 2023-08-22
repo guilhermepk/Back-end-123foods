@@ -12,6 +12,7 @@ import { diskStorage } from 'multer';
 import { MulterModule } from '@nestjs/platform-express';
 import { BannersModule } from './banners/banners.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { AddressModule } from './address/address.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { NotificationsModule } from './notifications/notifications.module';
     AuthModule,
     BannersModule,
     NotificationsModule,
+    AddressModule,
 
    
   ],
