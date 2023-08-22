@@ -11,13 +11,18 @@ import { TokenService } from '../token/token.service'; // Certifique-se de impor
 import { TokenModule } from '../token/token.module';
 
 @Module({
-    imports: [UsersModule, TokenModule, PassportModule, JwtModule.register({
-        global: true,
-        secret: jwtConstants.secret,
-        signOptions: { expiresIn: '60s' },
-    })],
-    controllers: [AuthController],
-    providers: [AuthService, LocalStrategy, JwtStrategy],
-    exports: [JwtModule, AuthService],
+  imports: [
+    UsersModule,
+    TokenModule,
+    PassportModule,
+    JwtModule.register({
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '1d' },
+    }),
+  ],
+  controllers: [AuthController],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
+  exports: [JwtModule, AuthService],
 })
 export class AuthModule {}
