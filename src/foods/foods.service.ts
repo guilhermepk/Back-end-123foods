@@ -84,6 +84,8 @@ export class FoodsService {
   }
 
   async remove(id: number): Promise<void> {
+    const foodId=id
+    const food=await this.imageRepository.delete(foodId)
     const result = await this.foodRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException('Food not found');
