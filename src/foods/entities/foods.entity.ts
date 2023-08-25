@@ -8,7 +8,9 @@ export class Foods {
   id: number;
   @Column()
   name: string;
-  @Column()
+
+  
+  @Column({nullable:true})
   brand: string;
   @Column({ type: 'numeric'})
   weight: number;

@@ -4,6 +4,7 @@ export class CreateFoodDto{
     @IsNotEmpty()
     name: string;
     
+    @IsOptional()
     @IsNotEmpty()
     brand: string;
 

@@ -53,12 +53,13 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOneById(+id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id/upload')
   async uploadupdateFile(
     @Param('id') id: string,
@@ -79,11 +80,13 @@ export class UsersController {
     return { user, fileName };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);

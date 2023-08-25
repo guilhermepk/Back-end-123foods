@@ -1,3 +1,4 @@
+import { IsOptional } from 'class-validator';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToOne, OneToMany } from 'typeorm';
 @Entity()
 export class Banners {
@@ -7,7 +8,7 @@ export class Banners {
   image:string;
   @Column()
   alt:string;
-  @Column()
+  @Column({nullable:true})
   link:string;
 
 

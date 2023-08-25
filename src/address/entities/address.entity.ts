@@ -22,7 +22,7 @@ export class Address {
   cep: string;
   @Column()
   numberhouse: string;
-  @Column()
+  @Column({nullable:true})
   complement: string;
   @Column()
   district: string;

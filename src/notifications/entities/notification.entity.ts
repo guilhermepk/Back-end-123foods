@@ -3,11 +3,14 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 export class Notifications {
     @PrimaryGeneratedColumn()
     id: number;
-@Column()
-    title:string;
-@Column()
-    message:string;
+
     @Column()
+    title:string;
+    
+    @Column()
+    message:string;
+
+    @Column({nullable:true})
     link:string;
 
 }

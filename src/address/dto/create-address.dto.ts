@@ -9,11 +9,13 @@ import {
   IsString,
   Validate,
   isNumber,
+  IsOptional
 } from 'class-validator';
 
 export class CreateAddressDto {
   @IsNotEmpty()
   userId: number;
+  @IsOptional()
   @IsString()
   complement: string;
 

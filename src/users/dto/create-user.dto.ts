@@ -8,10 +8,12 @@ import {
   Matches,
   IsString,
   Validate,
+  IsOptional,
 } from 'class-validator';
 import { IsAgeValidConstraint } from './is-age-valid.validator';
 import { IsCpfValidConstraint } from './is-cpf-valid.validator';
 export class CreateUserDto {
+  @IsOptional()
   @IsBoolean()
   admin = false;
 
