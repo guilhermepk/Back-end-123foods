@@ -7,7 +7,7 @@ import { LocalStrategy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
-import { TokenService } from '../token/token.service'; // Certifique-se de importar o TokenService aqui
+import { TokenService } from '../token/token.service';
 import { TokenModule } from '../token/token.module';
 
 @Module({

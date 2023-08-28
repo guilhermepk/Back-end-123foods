@@ -1,13 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  OneToOne,
-  OneToMany,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Address {
   @PrimaryGeneratedColumn()
@@ -22,7 +13,7 @@ export class Address {
   cep: string;
   @Column()
   numberhouse: string;
-  @Column({nullable:true})
+  @Column({ nullable: true })
   complement: string;
   @Column()
   district: string;

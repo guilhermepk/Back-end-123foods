@@ -12,29 +12,29 @@ export class BannersService {
   }
   constructor(
     @InjectRepository(Banners)
-    private bannerRepository:Repository<Banners>
-  ){}
-  create(createBannerDto: CreateBannerDto) :Promise<Banners>{
-    const banner=this.bannerRepository.create(createBannerDto);
+    private bannerRepository: Repository<Banners>,
+  ) {}
+  create(createBannerDto: CreateBannerDto): Promise<Banners> {
+    const banner = this.bannerRepository.create(createBannerDto);
     return this.bannerRepository.save(banner);
   }
 
-  findAll():Promise<Banners[]> {
+  findAll(): Promise<Banners[]> {
     return this.bannerRepository.find();
   }
 
-  async  remove(id: number): Promise<void> {
-    const banner =await this.bannerRepository.findOne({where:{id}});
+  async remove(id: number): Promise<void> {
+    const banner = await this.bannerRepository.findOne({ where: { id } });
     if (!banner) {
       throw new NotFoundException('User not found');
     }
-  
+
     if (banner.image) {
       const imagePath = './uploads/' + banner.image;
       await fs.unlink(imagePath);
       console.log('Image deleted');
     }
-  
+
     const result = await this.bannerRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException('Banner not found');

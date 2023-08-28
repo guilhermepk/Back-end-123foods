@@ -10,5 +10,4 @@ export class Token {
 
   @Column({ length: 100 })
   username: string;
-
 }

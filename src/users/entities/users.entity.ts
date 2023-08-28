@@ -13,7 +13,7 @@ import {
 export class Users {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column({ default: false,nullable:true })
+  @Column({ default: false, nullable: true })
   admin: boolean;
   @Column()
   name: string;

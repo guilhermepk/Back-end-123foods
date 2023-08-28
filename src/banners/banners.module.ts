@@ -5,11 +5,9 @@ import { Banners } from './entities/banners.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Banners]),
-  ],
+  imports: [TypeOrmModule.forFeature([Banners])],
   controllers: [BannersController],
   providers: [BannersService],
-  exports:[BannersService],
+  exports: [BannersService],
 })
 export class BannersModule {}

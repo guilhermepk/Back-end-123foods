@@ -1,10 +1,19 @@
-import { IsBoolean, IsDate, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString } from "class-validator";
+import {
+  IsBoolean,
+  IsDate,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+} from 'class-validator';
 export class CreateBannerDto {
+  image: string;
 
-    image:string
-    @IsString()
-    alt:string
-    @IsOptional()
-    @IsString()
-    link:string
+  @IsString()
+  alt: string;
+
+  @IsOptional()
+  @IsString()
+  link: string;
 }

@@ -1,15 +1,15 @@
-import { IsOptional } from 'class-validator';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, OneToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Banners {
-@PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn()
   id: number;
-  @Column()
-  image:string;
-  @Column()
-  alt:string;
-  @Column({nullable:true})
-  link:string;
 
+  @Column()
+  image: string;
 
+  @Column()
+  alt: string;
+
+  @Column({ nullable: true })
+  link: string;
 }

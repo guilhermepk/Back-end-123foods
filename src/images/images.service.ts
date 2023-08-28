@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Images } from './entities/images.entity';
@@ -6,7 +6,6 @@ import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
 
 @Injectable()
-
 export class ImagesService {
   constructor(
     @InjectRepository(Images)
@@ -31,12 +30,12 @@ export class ImagesService {
     if (!image) {
       throw new NotFoundException('Image not found');
     }
-    
+
     image.path = updateImageDto.path;
     image.food.id = updateImageDto.foodId;
 
     const updatedImage = await this.imageRepository.save(image);
-  
+
     return updatedImage;
   }
 

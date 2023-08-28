@@ -9,7 +9,6 @@ import {
   Delete,
   UseGuards,
   UploadedFile,
-  //UseInterceptors,
   BadRequestException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';

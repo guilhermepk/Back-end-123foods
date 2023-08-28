@@ -9,7 +9,7 @@ import {
   IsString,
   Validate,
   isNumber,
-  IsOptional
+  IsOptional,
 } from 'class-validator';
 
 export class CreateAddressDto {

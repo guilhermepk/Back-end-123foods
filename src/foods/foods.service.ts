@@ -1,19 +1,18 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, ILike, Repository } from 'typeorm';
 import { Foods } from './entities/foods.entity';
 import { CreateFoodDto } from './dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
-import { Images } from "src/images/entities/images.entity";
+import { Images } from 'src/images/entities/images.entity';
 
 @Injectable()
-
 export class FoodsService {
   constructor(
     @InjectRepository(Foods)
     private foodRepository: Repository<Foods>,
     @InjectRepository(Images)
-    private imageRepository: Repository<Images>
+    private imageRepository: Repository<Images>,
   ) {}
 
   async create(createFoodDto: CreateFoodDto): Promise<Foods> {
@@ -29,11 +28,11 @@ export class FoodsService {
     return this.imageRepository.save(newImage);
   }
 
-  async priceAll( minPrice: number, maxPrice: number): Promise<Foods[]> {
+  async priceAll(minPrice: number, maxPrice: number): Promise<Foods[]> {
     return this.foodRepository.find({
       where: {
-        price: Between(minPrice, maxPrice)
-      }
+        price: Between(minPrice, maxPrice),
+      },
     });
   }
   async search(filterValue: string): Promise<Foods[]> {
@@ -47,9 +46,10 @@ export class FoodsService {
     });
   }
 
-  
   async filterAll(filterType: string, filterValue: string): Promise<Foods[]> {
-    return this.foodRepository.find({ where: { [filterType]: ILike(`%${filterValue}%`) } });
+    return this.foodRepository.find({
+      where: { [filterType]: ILike(`%${filterValue}%`) },
+    });
   }
 
   async findOne(id: number): Promise<Foods> {
@@ -79,13 +79,13 @@ export class FoodsService {
     food.price = updateFoodDto.price;
 
     const updatedFood = await this.foodRepository.save(food);
-  
+
     return updatedFood;
   }
 
   async remove(id: number): Promise<void> {
-    const foodId=id
-    const food=await this.imageRepository.delete(foodId)
+    const foodId = id;
+    const food = await this.imageRepository.delete(foodId);
     const result = await this.foodRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException('Food not found');

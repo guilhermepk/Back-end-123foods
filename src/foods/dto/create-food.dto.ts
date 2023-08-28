@@ -1,32 +1,31 @@
-import { IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
-export class CreateFoodDto{
-    @IsNotEmpty()
-    name: string;
-    
-    @IsOptional()
-    @IsNotEmpty()
-    brand: string;
+export class CreateFoodDto {
+  @IsNotEmpty()
+  name: string;
 
-    // @IsNumber(undefined, { message: "O valor da propriedade 'weight' deve ser um número." })
-    @IsNotEmpty()
-    weight: number;
+  @IsOptional()
+  @IsNotEmpty()
+  brand: string;
 
-    @IsNotEmpty()
-    unit_of_measurement: string;
+  // @IsNumber(undefined, { message: "O valor da propriedade 'weight' deve ser um número." })
+  @IsNotEmpty()
+  weight: number;
 
-    @IsNotEmpty()
-    category: string;
+  @IsNotEmpty()
+  unit_of_measurement: string;
 
-    
-    // @IsNumber(undefined, { message: "O valor da propriedade 'amount' deve ser um número." })
-    @IsNotEmpty()
-    amount: number;
+  @IsNotEmpty()
+  category: string;
 
-    @IsNotEmpty()
-    description: string;
+  // @IsNumber(undefined, { message: "O valor da propriedade 'amount' deve ser um número." })
+  @IsNotEmpty()
+  amount: number;
 
-    @IsNotEmpty()
-    // @IsNumber(undefined, { message: "O valor da propriedade 'price' deve ser um número." })
-    price: number;
+  @IsNotEmpty()
+  description: string;
+
+  @IsNotEmpty()
+  // @IsNumber(undefined, { message: "O valor da propriedade 'price' deve ser um número." })
+  price: number;
 }

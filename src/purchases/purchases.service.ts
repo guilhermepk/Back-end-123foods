@@ -1,4 +1,8 @@
-import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Purchases } from './entities/purchases.entity';
@@ -11,25 +15,34 @@ import { Users } from 'src/users/entities/users.entity';
 export class PurchasesService {
   constructor(
     @InjectRepository(Purchases)
-    private purchaseRepository:Repository<Purchases>,
+    private purchaseRepository: Repository<Purchases>,
     @InjectRepository(Foods)
-    private foodRepository:Repository<Foods>,
+    private foodRepository: Repository<Foods>,
     @InjectRepository(Users)
-    private userRepository:Repository<Users>
+    private userRepository: Repository<Users>,
   ) {}
 
-  async create(createPurchaseDto:CreatePurchaseDto):Promise<Purchases>{
-    const idPurchase = await this.purchaseRepository.findOne({ relations: { food: true, user: true},  where: { food : { id: createPurchaseDto.foodId }, user: { id: createPurchaseDto.userId}}});
+  async create(createPurchaseDto: CreatePurchaseDto): Promise<Purchases> {
+    const idPurchase = await this.purchaseRepository.findOne({
+      relations: { food: true, user: true },
+      where: {
+        food: { id: createPurchaseDto.foodId },
+        user: { id: createPurchaseDto.userId },
+      },
+    });
     console.log(idPurchase);
     if (idPurchase) throw new NotAcceptableException('uma mensagem bunitinha');
 
-    const food = await this.foodRepository.findOne({ where: { id: createPurchaseDto.foodId}});
+    const food = await this.foodRepository.findOne({
+      where: { id: createPurchaseDto.foodId },
+    });
     if (!food) throw new NotFoundException('Não encontrado food');
-    
-    const user = await this.userRepository.findOne({ where: { id: createPurchaseDto.userId}});
+
+    const user = await this.userRepository.findOne({
+      where: { id: createPurchaseDto.userId },
+    });
     if (!user) throw new NotFoundException('Não encontrado user');
 
-    
     const newPurchase = new Purchases();
     newPurchase.food = food;
     newPurchase.user = user;
@@ -42,14 +55,17 @@ export class PurchasesService {
     return this.purchaseRepository.find();
   }
 
-  async findOne(id:number):Promise<Purchases>{
-    return this.purchaseRepository.findOne({where:{id}});
+  async findOne(id: number): Promise<Purchases> {
+    return this.purchaseRepository.findOne({ where: { id } });
   }
 
-  async update(id:number, updatePurchaseDto:UpdatePurchaseDto): Promise<Purchases> {
-    const purchase =await this.purchaseRepository.findOne({where:{id}});
+  async update(
+    id: number,
+    updatePurchaseDto: UpdatePurchaseDto,
+  ): Promise<Purchases> {
+    const purchase = await this.purchaseRepository.findOne({ where: { id } });
     if (!purchase) {
-    throw new NotFoundException('Carrinho não encontrado');
+      throw new NotFoundException('Carrinho não encontrado');
     }
     purchase.user.id = updatePurchaseDto.userId;
     purchase.food.id = updatePurchaseDto.foodId;

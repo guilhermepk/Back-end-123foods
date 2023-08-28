@@ -17,7 +17,7 @@ import { AddressModule } from './address/address.module';
 @Module({
   imports: [
     FoodsModule,
-    
+
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -30,9 +30,10 @@ import { AddressModule } from './address/address.module';
     ImagesModule,
     MulterModule.register({
       storage: diskStorage({
-        destination: './uploads', 
+        destination: './uploads',
         filename: (req, file, callback) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
           const extension = file.originalname.split('.').pop();
           const filename = uniqueSuffix + '.' + extension;
           callback(null, filename);
@@ -43,10 +44,7 @@ import { AddressModule } from './address/address.module';
     BannersModule,
     NotificationsModule,
     AddressModule,
-
-   
   ],
   controllers: [AppController],
-  
 })
 export class AppModule {}

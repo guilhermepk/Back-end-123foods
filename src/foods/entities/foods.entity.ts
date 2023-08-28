@@ -1,7 +1,18 @@
-
 import { Images } from 'src/images/entities/images.entity';
 import { Purchases } from 'src/purchases/entities/purchases.entity';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, OneToMany, OneToOne, JoinColumn, JoinTable } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
+  JoinTable,
+} from 'typeorm';
 @Entity()
 export class Foods {
   @PrimaryGeneratedColumn()
@@ -9,26 +20,32 @@ export class Foods {
   @Column()
   name: string;
 
-  
-  @Column({nullable:true})
+  @Column({ nullable: true })
   brand: string;
-  @Column({ type: 'numeric'})
+
+  @Column({ type: 'numeric' })
   weight: number;
+
   @Column()
   unit_of_measurement: string;
+
   @Column()
   category: string;
+
   @Column()
   amount: number;
+
   @Column()
   description: string;
-  @Column({ type: 'numeric'})
+
+  @Column({ type: 'numeric' })
   price: number;
 
   @OneToMany(() => Purchases, (purchase) => purchase.food)
-  purchases: Purchases[]
+  purchases: Purchases[];
+
   @OneToMany(() => Images, (image) => image.food)
-  images: Images[]
+  images: Images[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;
