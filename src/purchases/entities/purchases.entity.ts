@@ -10,16 +10,26 @@ import {
 } from 'typeorm';
 import { Users } from '../../users/entities/users.entity';
 import { Foods } from '../../foods/entities/foods.entity';
+import { Images } from 'src/images/entities/images.entity';
+
 
 @Entity()
 export class Purchases {
   @PrimaryGeneratedColumn()
   id: number;
 
+
+  @Column()
+  status:string;
+
   @ManyToOne(() => Users, (user) => user.purchases)
   user: Users;
-  @ManyToOne(() => Foods, (food) => food.purchases)
+
+  @ManyToOne(() => Images, (images) => images.purchases)
+  image: Images;
+  @ManyToOne(() => Foods, (foods) => foods.purchases)
   food: Foods;
+
   @Column()
   amount: number;
 

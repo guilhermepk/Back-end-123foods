@@ -1,12 +1,19 @@
-import { IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreatePurchaseDto {
-  @IsNumber()
+  
+  @IsNotEmpty()
   userId: number;
 
-  @IsNumber()
-  foodId: number;
+  @IsString()
+  status:string;
+ 
+  @IsNotEmpty()
+  imageId: number;
+  
+  @IsNotEmpty()
+  foodId:number;
 
-  @IsNumber()
+  @IsNotEmpty()
   amount: number;
 }

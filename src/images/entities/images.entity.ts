@@ -1,4 +1,5 @@
 import { Foods } from 'src/foods/entities/foods.entity';
+import { Purchases } from 'src/purchases/entities/purchases.entity';
 import {
   Entity,
   Column,
@@ -16,6 +17,9 @@ export class Images {
   id: number;
   @Column()
   path: string;
+  
+  @OneToMany(() => Purchases, (purchase) => purchase.image)
+  purchases: Purchases[];
 
   @ManyToOne(() => Foods, (food) => food.images)
   food: Foods;

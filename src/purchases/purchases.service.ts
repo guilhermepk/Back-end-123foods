@@ -8,14 +8,18 @@ import { Repository } from 'typeorm';
 import { Purchases } from './entities/purchases.entity';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
 import { UpdatePurchaseDto } from './dto/update-purchase.dto';
-import { Foods } from 'src/foods/entities/foods.entity';
+import { Images} from 'src/images/entities/images.entity';
 import { Users } from 'src/users/entities/users.entity';
+import { Foods } from 'src/foods/entities/foods.entity';
+import { privateEncrypt } from 'crypto';
 
 @Injectable()
 export class PurchasesService {
   constructor(
     @InjectRepository(Purchases)
     private purchaseRepository: Repository<Purchases>,
+    @InjectRepository(Images)
+    private imageRepository: Repository<Images>,
     @InjectRepository(Foods)
     private foodRepository: Repository<Foods>,
     @InjectRepository(Users)
@@ -24,19 +28,20 @@ export class PurchasesService {
 
   async create(createPurchaseDto: CreatePurchaseDto): Promise<Purchases> {
     const idPurchase = await this.purchaseRepository.findOne({
-      relations: { food: true, user: true },
+      relations: { image: true, user: true, food:true },
       where: {
-        food: { id: createPurchaseDto.foodId },
+    
+        image: { id: createPurchaseDto.imageId },
         user: { id: createPurchaseDto.userId },
       },
     });
     console.log(idPurchase);
     if (idPurchase) throw new NotAcceptableException('uma mensagem bunitinha');
 
-    const food = await this.foodRepository.findOne({
-      where: { id: createPurchaseDto.foodId },
+    const image = await this.imageRepository.findOne({
+      where: { id: createPurchaseDto.imageId },
     });
-    if (!food) throw new NotFoundException('Não encontrado food');
+    if (!image) throw new NotFoundException('Não encontrado food');
 
     const user = await this.userRepository.findOne({
       where: { id: createPurchaseDto.userId },
@@ -44,15 +49,16 @@ export class PurchasesService {
     if (!user) throw new NotFoundException('Não encontrado user');
 
     const newPurchase = new Purchases();
-    newPurchase.food = food;
+    newPurchase.image = image;
     newPurchase.user = user;
     newPurchase.amount = createPurchaseDto.amount;
 
     return this.purchaseRepository.save(newPurchase);
   }
 
-  async findAll() {
-    return this.purchaseRepository.find();
+  async findAll(userId:number):Promise<Purchases>  {
+    return this.purchaseRepository.find({where:{userId:userId},
+      relations: ['images'],});
   }
 
   async findOne(id: number): Promise<Purchases> {
@@ -68,7 +74,7 @@ export class PurchasesService {
       throw new NotFoundException('Carrinho não encontrado');
     }
     purchase.user.id = updatePurchaseDto.userId;
-    purchase.food.id = updatePurchaseDto.foodId;
+    purchase.image.id = updatePurchaseDto.imageId;
     purchase.amount = updatePurchaseDto.amount;
 
     const updatedUser = await this.purchaseRepository.save(purchase);
@@ -79,7 +85,7 @@ export class PurchasesService {
   async remove(id: number): Promise<void> {
     const result = await this.purchaseRepository.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException('foods_has_image not found');
+      throw new NotFoundException('images_has_image not found');
     }
   }
 }
