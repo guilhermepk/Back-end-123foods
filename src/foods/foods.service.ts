@@ -48,7 +48,7 @@ export class FoodsService {
 
   async filterAll(filterType: string, filterValue: string): Promise<Foods[]> {
     return this.foodRepository.find({
-      where: { [filterType]: ILike(`%${filterValue}%`) },
+      where: { [filterType]: ILike(`%${filterValue}%`) }, relations: ['images']
     });
   }
 
