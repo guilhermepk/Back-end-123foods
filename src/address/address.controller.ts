@@ -40,7 +40,7 @@ export class AddressController {
   update(@Param('id') id: string, @Body() updateAddressDto: UpdateAddressDto) {
     return this.addressService.update(+id, updateAddressDto);
   }
-  @UseGuards(JwtAuthGuard)
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.addressService.remove(+id);

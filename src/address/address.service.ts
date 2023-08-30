@@ -17,14 +17,7 @@ export class AddressService {
   ) {}
 
   async create(createAddressDto: CreateAddressDto): Promise<Address> {
-    const idAddress =await this.addressRepository.findOne({
-      relations: {  user: true},
-      where: {
-        user: { id: createAddressDto.userId },
-      },
-
-    });
-    if (idAddress) throw new NotAcceptableException('uma mensagem bunitinha');
+   
     const user = await this.userRepository.findOne({
       where: { id: createAddressDto.userId },
     });
