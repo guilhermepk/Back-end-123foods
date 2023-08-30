@@ -25,6 +25,7 @@ export class AddressController {
     private authService: AuthService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createAddressDto: CreateAddressDto) {
     return this.addressService.create(createAddressDto);
