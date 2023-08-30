@@ -20,7 +20,7 @@ export class Purchases {
 
 
   @Column({ default: 'previsto' }) 
-status: string;
+  status: string;
 
 
   @ManyToOne(() => Users, (user) => user.purchases)
