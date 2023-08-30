@@ -20,10 +20,10 @@ export class PurchasesController {
     return this.purchasesService.create(createPurchaseDto);
   }
 
-  @Get(':userId')
-  findAll(@Param('userId')userId:string) {
-    return this.purchasesService.findAll(+userId);
-  }
+  // @Get(':userId')
+  // findAll(@Param('userId')userId:string) {
+  //   return this.purchasesService.findAll(+userId);
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

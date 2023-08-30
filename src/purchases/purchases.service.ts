@@ -56,10 +56,10 @@ export class PurchasesService {
     return this.purchaseRepository.save(newPurchase);
   }
 
-  async findAll(userId:number):Promise<Purchases>  {
-    return this.purchaseRepository.find({where:{userId:userId},
-      relations: ['images'],});
-  }
+  // async findAll(userId:number):Promise<Purchases>  {
+  //   return this.purchaseRepository.find({where:{userId:userId},
+  //     relations: ['images'],});
+  // }
 
   async findOne(id: number): Promise<Purchases> {
     return this.purchaseRepository.findOne({ where: { id } });
