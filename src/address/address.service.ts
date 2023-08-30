@@ -1,27 +1,48 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Address } from './entities/address.entity';
 import { Repository } from 'typeorm';
+import { Users } from 'src/users/entities/users.entity';
 
 @Injectable()
 export class AddressService {
-  findById(id: any) {
-    throw new Error('Method not implemented.');
-  }
   constructor(
     @InjectRepository(Address)
     private addressRepository: Repository<Address>,
+    @InjectRepository(Users)
+    private userRepository: Repository<Users>,
+    
   ) {}
 
   async create(createAddressDto: CreateAddressDto): Promise<Address> {
-    const address = this.addressRepository.create(createAddressDto);
-    return this.addressRepository.save(address);
+    const idAddress =await this.addressRepository.findOne({
+      relations: {  user: true},
+      where: {
+        user: { id: createAddressDto.userId },
+      },
+
+    });
+    if (idAddress) throw new NotAcceptableException('uma mensagem bunitinha');
+    const user = await this.userRepository.findOne({
+      where: { id: createAddressDto.userId },
+    });
+    if (!user) throw new NotFoundException('Não encontrado user');
+    const newAddress= new Address();
+    newAddress.user=user;
+    newAddress.cep=createAddressDto.cep;
+    newAddress.city=createAddressDto.city;
+    newAddress.complement=createAddressDto.complement;
+    newAddress.numberhouse=createAddressDto.numberhouse;
+    newAddress.state=createAddressDto.state;
+    newAddress.street=createAddressDto.street;
+    newAddress.district=createAddressDto.district;
+    return this.addressRepository.save(newAddress);
   }
 
   async findAll(userId: number): Promise<Address[]> {
-    return this.addressRepository.find({ where: { userId } });
+    return this.addressRepository.find({ where: { user: { id: userId }} });
   }
 
   async update(

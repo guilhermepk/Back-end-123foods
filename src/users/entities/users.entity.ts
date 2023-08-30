@@ -1,3 +1,4 @@
+import { Address } from 'src/address/entities/address.entity';
 import { Purchases } from 'src/purchases/entities/purchases.entity';
 import {
   Entity,
@@ -32,6 +33,8 @@ export class Users {
   @Column()
   image: string;
 
+  @OneToMany(() => Address, (address) => address.user)
+  address: Address[];
   @OneToMany(() => Purchases, (purchase) => purchase.user)
   purchases: Purchases[];
 

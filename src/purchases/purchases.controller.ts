@@ -21,14 +21,15 @@ export class PurchasesController {
   }
 
   @Get(':userId')
-  findAll(@Param('userId')userId:string) {
-    return this.purchasesService.findAll(+userId);
-  }
+findAll(@Param('userId') userId: string) {
+  return this.purchasesService.findAllByUserId(+userId);
+}
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.purchasesService.findOne(+id);
-  }
+
+@Get('/:userId/:status')
+find(@Param('userId') userId: string, @Param('status') status: string) {
+  return this.purchasesService.findbuypurchase(+userId, status);
+}
 
   @Patch(':id')
   update(

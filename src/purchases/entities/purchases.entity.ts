@@ -19,8 +19,9 @@ export class Purchases {
   id: number;
 
 
-  @Column()
-  status:string;
+  @Column({ default: 'previsto' }) 
+status: string;
+
 
   @ManyToOne(() => Users, (user) => user.purchases)
   user: Users;

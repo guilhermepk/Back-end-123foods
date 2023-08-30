@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreatePurchaseDto {
   
   @IsNotEmpty()
   userId: number;
 
-  @IsString()
+  @IsOptional()
   status:string;
  
   @IsNotEmpty()

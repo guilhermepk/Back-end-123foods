@@ -31,6 +31,7 @@ export class PurchasesService {
       relations: { image: true, user: true, food:true },
       where: {
     
+        food:{id: createPurchaseDto.foodId },
         image: { id: createPurchaseDto.imageId },
         user: { id: createPurchaseDto.userId },
       },
@@ -41,25 +42,45 @@ export class PurchasesService {
     const image = await this.imageRepository.findOne({
       where: { id: createPurchaseDto.imageId },
     });
-    if (!image) throw new NotFoundException('Não encontrado food');
+    if (!image) throw new NotFoundException('Não encontrado image');
 
     const user = await this.userRepository.findOne({
       where: { id: createPurchaseDto.userId },
     });
     if (!user) throw new NotFoundException('Não encontrado user');
+    const food = await this.foodRepository.findOne({
+      where: { id: createPurchaseDto.foodId },
+    });
+    if (!food) throw new NotFoundException('Não encontrado food');
 
     const newPurchase = new Purchases();
     newPurchase.image = image;
+    newPurchase.food = food;
     newPurchase.user = user;
-    newPurchase.amount = createPurchaseDto.amount;
+    newPurchase.amount = createPurchaseDto.amount; 
+    newPurchase.status = createPurchaseDto.status;
 
     return this.purchaseRepository.save(newPurchase);
   }
 
-  async findAll(userId:number):Promise<Purchases>  {
-    return this.purchaseRepository.find({where:{userId:userId},
-      relations: ['images'],});
+  async findbuypurchase(userId: number, status:string): Promise<Purchases[]> {
+    return this.purchaseRepository
+      .createQueryBuilder('purchase')
+      .where('purchase.user.id = :userId', { userId }) 
+      .andWhere('purchase.status = :status', { status: status }) 
+      .leftJoinAndSelect('purchase.image', 'image')
+      .leftJoinAndSelect('purchase.user', 'user')
+      .getMany();
   }
+  
+  async findAllByUserId(userId: number): Promise<Purchases[]> {
+    return this.purchaseRepository.find({
+      where: { user: { id: userId } },
+      relations: ['image','user'],
+      
+    });
+  }
+  
 
   async findOne(id: number): Promise<Purchases> {
     return this.purchaseRepository.findOne({ where: { id } });
@@ -73,8 +94,7 @@ export class PurchasesService {
     if (!purchase) {
       throw new NotFoundException('Carrinho não encontrado');
     }
-    purchase.user.id = updatePurchaseDto.userId;
-    purchase.image.id = updatePurchaseDto.imageId;
+    purchase.status=updatePurchaseDto.status;
     purchase.amount = updatePurchaseDto.amount;
 
     const updatedUser = await this.purchaseRepository.save(purchase);
