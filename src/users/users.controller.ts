@@ -1,7 +1,7 @@
 import {
   Controller,
   Request,
-  Get,
+  Get,  
   Post,
   Body,
   Patch,
@@ -74,7 +74,14 @@ export class UsersController {
     if (!file) {
       throw new BadRequestException('No file uploaded');
     }
-    if (file.originalname.toLowerCase().endsWith('.gif')) {
+    const userIsAdm = async (id: number) => {
+      const user = await this.usersService.findOneById(id);
+
+      if(user.admin) return true;
+      else return false;
+    }
+
+    if (file.originalname.toLowerCase().endsWith('.gif') && await userIsAdm(+id) === false) {
       throw new BadRequestException('Arquivos .gif não são permitidos');
     }
   
