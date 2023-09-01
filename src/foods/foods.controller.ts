@@ -32,6 +32,9 @@ export class FoodsController {
     if (!file) {
       throw new BadRequestException('No file uploaded');
     }
+    if (file.originalname.toLowerCase().endsWith('.gif')) {
+      throw new BadRequestException('Arquivos .gif não são permitidos');
+    }
 
     const fileName = `${uuidv4()}-${file.originalname}`;
     const uploadPath = './uploads/' + fileName;

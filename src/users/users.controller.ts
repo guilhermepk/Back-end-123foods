@@ -33,6 +33,12 @@ export class UsersController {
     @UploadedFile() file: Express.Multer.File,
     @Body() createUserDto: CreateUserDto,
   ) {
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+    if (file.originalname.toLowerCase().endsWith('.gif')) {
+      throw new BadRequestException('Arquivos .gif não são permitidos');
+    }
     let fileName;
     if (file) {
       fileName = `${uuidv4()}-${file.originalname}`;
@@ -68,14 +74,17 @@ export class UsersController {
     if (!file) {
       throw new BadRequestException('No file uploaded');
     }
-
+    if (file.originalname.toLowerCase().endsWith('.gif')) {
+      throw new BadRequestException('Arquivos .gif não são permitidos');
+    }
+  
     const fileName = `${uuidv4()}-${file.originalname}`;
     const uploadPath = './uploads/' + fileName;
-
+  
     await fs.move(file.path, uploadPath);
     updateUserDto.image = fileName;
     const user = await this.usersService.updateimage(+id, updateUserDto);
-
+  
     return { user, fileName };
   }
 
