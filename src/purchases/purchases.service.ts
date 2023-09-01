@@ -30,7 +30,7 @@ export class PurchasesService {
     const idPurchase = await this.purchaseRepository.findOne({
       relations: { image: true, user: true, food:true },
       where: {
-    
+    status:'previsto',
         food:{id: createPurchaseDto.foodId },
         image: { id: createPurchaseDto.imageId },
         user: { id: createPurchaseDto.userId },
