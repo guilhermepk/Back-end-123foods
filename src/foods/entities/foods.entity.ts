@@ -37,11 +37,11 @@ export class Foods {
 
   @Column()
   description: string;
-
-  @Column({ type: 'numeric' })
+  
   @OneToMany(() => Purchases, (purchase) => purchase.food)
   purchases: Purchases[];
-  
+
+  @Column({ type: 'numeric' })  
   price: number;
 
   @OneToMany(() => Images, (image) => image.food)
