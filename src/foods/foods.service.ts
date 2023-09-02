@@ -39,10 +39,10 @@ export class FoodsService {
     return this.foodRepository.find({
       where: [
         { name: ILike(`%${filterValue}%`) },
-        { description: ILike(`%${filterValue}%`) },
-        { category: ILike(`%${filterValue}%`) },
         { brand: ILike(`%${filterValue}%`) },
-      ],
+        { category: ILike(`%${filterValue}%`) },
+        { description: ILike(`%${filterValue}%`) }
+      ]
     });
   }
 
