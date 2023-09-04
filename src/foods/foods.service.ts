@@ -35,15 +35,34 @@ export class FoodsService {
       },
     });
   }
-  async search(filterValue: string): Promise<Foods[]> {
+
+  async searchName(filterValue: string): Promise<Foods[]> {
     return this.foodRepository.find({
-      where: [
-        { name: ILike(`%${filterValue}%`) },
-        { brand: ILike(`%${filterValue}%`) },
-        { category: ILike(`%${filterValue}%`) },
-        { description: ILike(`%${filterValue}%`) }
-      ]
+      where:
+        { name: ILike(`%${filterValue}%`) }
     });
+  }
+
+  async searchBrand(filterValue: string): Promise<Foods[]> {
+    return this.foodRepository.find({
+      where:
+        { brand: ILike(`%${filterValue}%`) }
+    });
+  }
+
+  async search(filterValue: string): Promise<Foods[]> {
+    const names = [...await this.searchName(filterValue)];
+    const brands = [...await this.searchBrand(filterValue)];
+    let products = [...names];
+    
+    products.map((product) => {
+      brands.map((brand) => {
+        if(brand != product)
+          products.push(brand);
+      });
+    });
+
+    return products;
   }
 
   async filterAll(filterType: string, filterValue: string): Promise<Foods[]> {
