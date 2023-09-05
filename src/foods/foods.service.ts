@@ -50,17 +50,56 @@ export class FoodsService {
     });
   }
 
+  async searchCategory(filterValue: string): Promise<Foods[]> {
+    return this.foodRepository.find({
+      where:
+        { category: ILike(`%${filterValue}%`) }
+    });
+  }
+
+  async searchDescription(filterValue: string): Promise<Foods[]> {
+    return this.foodRepository.find({
+      where:
+        { description: ILike(`%${filterValue}%`) }
+    });
+  }
+
+  productInList = (product, list) => {
+    if (list.length < 1){
+      return false
+    }
+    let inside = false
+    list.map((item) => {
+      if (item.id === product.id){
+        inside = true
+      }
+    })
+
+    return inside
+  }
+
   async search(filterValue: string): Promise<Foods[]> {
     const names = [...await this.searchName(filterValue)];
     const brands = [...await this.searchBrand(filterValue)];
-    let products = [...names];
-    
-    products.map((product) => {
-      brands.map((brand) => {
-        if(brand != product)
-          products.push(brand);
-      });
-    });
+    const categories = [...await this.searchCategory(filterValue)];
+    const descriptions = [...await this.searchDescription(filterValue)];
+    let products = [...names]
+
+    brands.map((item) => {
+      if (!this.productInList(item, products)){
+        products.push(item)
+      }
+    })
+    categories.map((item) => {
+      if (!this.productInList(item, products)){
+        products.push(item)
+      }
+    })
+    descriptions.map((item) => {
+      if (!this.productInList(item, products)){
+        products.push(item)
+      }
+    })
 
     return products;
   }
