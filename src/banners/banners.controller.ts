@@ -44,7 +44,10 @@ export class BannersController {
     const fileName = `${uuidv4()}-${file.originalname}`;
     const uploadPath = './uploads/' + fileName;
 
-    await sharp(file.path).resize(800, 300).toFile(uploadPath);
+    await sharp(file.path)
+    // .resize(1600, 600)
+    // .extract({ left: 100, top: 50, width: 1500, height: 500 })
+    .toFile(uploadPath);
 
     await fs.remove(file.path);
 

@@ -70,13 +70,14 @@ export class PurchasesService {
       .andWhere('purchase.status = :status', { status: status }) 
       .leftJoinAndSelect('purchase.image', 'image')
       .leftJoinAndSelect('purchase.user', 'user')
+      .leftJoinAndSelect('purchase.food', 'food')
       .getMany();
   }
   
   async findAllByUserId(userId: number): Promise<Purchases[]> {
     return this.purchaseRepository.find({
       where: { user: { id: userId } },
-      relations: ['image','user'],
+      relations: ['image','user','foods'],
       
     });
   }
