@@ -34,34 +34,34 @@ export class FoodsService {
         price: Between(minPrice, maxPrice),
       },
     });
-  }
+  };
 
   async searchName(filterValue: string): Promise<Foods[]> {
-    return this.foodRepository.find({
-      where:
-        { name: ILike(`%${filterValue}%`) }
-    });
+    return this.foodRepository.createQueryBuilder('food')
+      .where('food.name ILIKE :filterValue', { filterValue: `%${filterValue}%` })
+      .leftJoinAndSelect('food.images', 'image')
+      .getMany();
   }
 
   async searchBrand(filterValue: string): Promise<Foods[]> {
-    return this.foodRepository.find({
-      where:
-        { brand: ILike(`%${filterValue}%`) }
-    });
+    return this.foodRepository.createQueryBuilder('food')
+      .where('food.brand ILIKE :filterValue', { filterValue: `%${filterValue}%` })
+      .leftJoinAndSelect('food.images', 'image')
+      .getMany();
   }
 
   async searchCategory(filterValue: string): Promise<Foods[]> {
-    return this.foodRepository.find({
-      where:
-        { category: ILike(`%${filterValue}%`) }
-    });
+    return this.foodRepository.createQueryBuilder('food')
+      .where('food.category ILIKE :filterValue', { filterValue: `%${filterValue}%` })
+      .leftJoinAndSelect('food.images', 'image')
+      .getMany();
   }
 
   async searchDescription(filterValue: string): Promise<Foods[]> {
-    return this.foodRepository.find({
-      where:
-        { description: ILike(`%${filterValue}%`) }
-    });
+    return this.foodRepository.createQueryBuilder('food')
+      .where('food.description ILIKE :filterValue', { filterValue: `%${filterValue}%` })
+      .leftJoinAndSelect('food.images', 'image')
+      .getMany();
   }
 
   productInList = (product, list) => {
