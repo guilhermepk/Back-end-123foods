@@ -4,9 +4,8 @@ export class CreateFoodDto {
   @IsNotEmpty()
   name: string;
 
-  @IsOptional()
   @IsNotEmpty()
-  brand: string;
+  brand: string = 'Nenhuma';
 
   // @IsNumber(undefined, { message: "O valor da propriedade 'weight' deve ser um número." })
   @IsNotEmpty()
