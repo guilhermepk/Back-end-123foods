@@ -1,5 +1,6 @@
 import { Images } from 'src/images/entities/images.entity';
 import { Purchases } from 'src/purchases/entities/purchases.entity';
+import { UnitsOfMeansurement } from 'src/units_of_meansurement/entities/units_of_meansurement.entity';
 import {
   Entity,
   Column,
@@ -8,7 +9,8 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToMany,
-  OneToMany,
+  ManyToOne,
+    OneToMany,
   OneToOne,
   JoinColumn,
   JoinTable,
@@ -26,8 +28,7 @@ export class Foods {
   @Column({ type: 'numeric' })
   weight: number;
 
-  @Column()
-  unit_of_measurement: string;
+  
 
   @Column()
   category: string;
@@ -38,6 +39,8 @@ export class Foods {
   @Column()
   description: string;
   
+  @ManyToOne(() =>UnitsOfMeansurement , (units_of_meansurement) => UnitsOfMeansurement.food)
+  unit_of_measurement: UnitsOfMeansurement[];
   @OneToMany(() => Purchases, (purchase) => purchase.food)
   purchases: Purchases[];
 

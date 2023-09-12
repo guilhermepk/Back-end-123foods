@@ -11,8 +11,9 @@ export class CreateFoodDto {
   @IsNotEmpty()
   weight: number;
 
-  @IsNotEmpty()
-  unit_of_measurement: string;
+  @IsNumber()
+    unit_of_measurementId: number;
+
 
   @IsNotEmpty()
   category: string;

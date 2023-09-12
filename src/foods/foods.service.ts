@@ -40,6 +40,7 @@ export class FoodsService {
     return this.foodRepository.createQueryBuilder('food')
       .where('food.name ILIKE :filterValue', { filterValue: `%${filterValue}%` })
       .leftJoinAndSelect('food.images', 'image')
+      .leftJoinAndSelect('food.unit_of_measurement', 'unit_of_measurement')
       .getMany();
   }
 
@@ -47,6 +48,7 @@ export class FoodsService {
     return this.foodRepository.createQueryBuilder('food')
       .where('food.brand ILIKE :filterValue', { filterValue: `%${filterValue}%` })
       .leftJoinAndSelect('food.images', 'image')
+      .leftJoinAndSelect('food.unit_of_measurement', 'unit_of_measurement')
       .getMany();
   }
 
@@ -54,6 +56,7 @@ export class FoodsService {
     return this.foodRepository.createQueryBuilder('food')
       .where('food.category ILIKE :filterValue', { filterValue: `%${filterValue}%` })
       .leftJoinAndSelect('food.images', 'image')
+      .leftJoinAndSelect('food.unit_of_measurement', 'unit_of_measurement')
       .getMany();
   }
 
@@ -61,6 +64,7 @@ export class FoodsService {
     return this.foodRepository.createQueryBuilder('food')
       .where('food.description ILIKE :filterValue', { filterValue: `%${filterValue}%` })
       .leftJoinAndSelect('food.images', 'image')
+      .leftJoinAndSelect('food.unit_of_measurement', 'unit_of_measurement')
       .getMany();
   }
 
@@ -106,22 +110,24 @@ export class FoodsService {
 
   async filterAll(filterType: string, filterValue: string): Promise<Foods[]> {
     return this.foodRepository.find({
-      where: { [filterType]: ILike(`%${filterValue}%`) }, relations: ['images']
+      where: { [filterType]: ILike(`%${filterValue}%`) }, relations: ['images',]
     });
   }
 
   async findOne(id: number): Promise<Foods> {
     return this.foodRepository.findOne({
       where: { id },
-      relations: ['images'], // Load associated images
+      relations: ['images'], 
     });
   }
 
   async findAll(): Promise<Foods[]> {
-    return this.foodRepository.find({
-      relations: ['images'],
-    });
+    return this.foodRepository.createQueryBuilder('food')
+      .leftJoinAndSelect('food.images', 'images')
+      .leftJoinAndSelect('food.unit_of_measurement', 'unit_of_measurement')
+      .getMany();
   }
+  
   async update(id: number, updateFoodDto: UpdateFoodDto): Promise<Foods> {
     const food = await this.foodRepository.findOne({ where: { id } });
     if (!food) {
@@ -130,7 +136,6 @@ export class FoodsService {
     food.name = updateFoodDto.name;
     food.brand = updateFoodDto.brand;
     food.weight = updateFoodDto.weight;
-    food.unit_of_measurement = updateFoodDto.unit_of_measurement;
     food.category = updateFoodDto.category;
     food.amount = updateFoodDto.amount;
     food.description = updateFoodDto.description;
