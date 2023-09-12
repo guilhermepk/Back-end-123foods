@@ -26,13 +26,13 @@ export class BannersService {
   async remove(id: number): Promise<void> {
     const banner = await this.bannerRepository.findOne({ where: { id } });
     if (!banner) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('Banner not found');
     }
 
     if (banner.image) {
       const imagePath = './uploads/' + banner.image;
       await fs.unlink(imagePath);
-      console.log('Image deleted');
+      console.log('Banner deleted');
     }
 
     const result = await this.bannerRepository.delete(id);
