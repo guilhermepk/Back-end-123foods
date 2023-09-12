@@ -32,7 +32,7 @@ export class ImagesService {
     }
 
     image.path = updateImageDto.path;
-    image.food.id = updateImageDto.foodId;
+    image.product.id = updateImageDto.productId;
 
     const updatedImage = await this.imageRepository.save(image);
 

@@ -1,4 +1,4 @@
-import { Foods } from 'src/foods/entities/foods.entity';
+import { Products } from 'src/products/entities/products.entity';
 import { Purchases } from 'src/purchases/entities/purchases.entity';
 import {
   Entity,
@@ -21,8 +21,8 @@ export class Images {
   @OneToMany(() => Purchases, (purchase) => purchase.image)
   purchases: Purchases[];
 
-  @ManyToOne(() => Foods, (food) => food.images)
-  food: Foods;
+  @ManyToOne(() => Products, (product) => product.images)
+  product: Products;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt?: Date;

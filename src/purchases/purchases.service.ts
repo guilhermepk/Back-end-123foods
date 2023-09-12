@@ -10,7 +10,7 @@ import { CreatePurchaseDto } from './dto/create-purchase.dto';
 import { UpdatePurchaseDto } from './dto/update-purchase.dto';
 import { Images} from 'src/images/entities/images.entity';
 import { Users } from 'src/users/entities/users.entity';
-import { Foods } from 'src/foods/entities/foods.entity';
+import { Products } from 'src/products/entities/products.entity';
 import { privateEncrypt } from 'crypto';
 
 @Injectable()
@@ -20,18 +20,18 @@ export class PurchasesService {
     private purchaseRepository: Repository<Purchases>,
     @InjectRepository(Images)
     private imageRepository: Repository<Images>,
-    @InjectRepository(Foods)
-    private foodRepository: Repository<Foods>,
+    @InjectRepository(Products)
+    private productRepository: Repository<Products>,
     @InjectRepository(Users)
     private userRepository: Repository<Users>,
   ) {}
 
   async create(createPurchaseDto: CreatePurchaseDto): Promise<Purchases> {
     const idPurchase = await this.purchaseRepository.findOne({
-      relations: { image: true, user: true, food:true },
+      relations: { image: true, user: true, product:true },
       where: {
     status:'previsto',
-        food:{id: createPurchaseDto.foodId },
+        product:{id: createPurchaseDto.productId },
         image: { id: createPurchaseDto.imageId },
         user: { id: createPurchaseDto.userId },
       },
@@ -48,14 +48,14 @@ export class PurchasesService {
       where: { id: createPurchaseDto.userId },
     });
     if (!user) throw new NotFoundException('Não encontrado user');
-    const food = await this.foodRepository.findOne({
-      where: { id: createPurchaseDto.foodId },
+    const product = await this.productRepository.findOne({
+      where: { id: createPurchaseDto.productId },
     });
-    if (!food) throw new NotFoundException('Não encontrado food');
+    if (!product) throw new NotFoundException('Não encontrado product');
 
     const newPurchase = new Purchases();
     newPurchase.image = image;
-    newPurchase.food = food;
+    newPurchase.product = product;
     newPurchase.user = user;
     newPurchase.amount = createPurchaseDto.amount; 
     newPurchase.status = createPurchaseDto.status;
@@ -70,14 +70,14 @@ export class PurchasesService {
       .andWhere('purchase.status = :status', { status: status }) 
       .leftJoinAndSelect('purchase.image', 'image')
       .leftJoinAndSelect('purchase.user', 'user')
-      .leftJoinAndSelect('purchase.food', 'food')
+      .leftJoinAndSelect('purchase.product', 'product')
       .getMany();
   }
   
   async findAllByUserId(userId: number): Promise<Purchases[]> {
     return this.purchaseRepository.find({
       where: { user: { id: userId } },
-      relations: ['image','user','foods'],
+      relations: ['image','user','products'],
       
     });
   }

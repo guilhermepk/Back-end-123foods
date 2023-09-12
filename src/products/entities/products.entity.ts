@@ -16,7 +16,7 @@ import {
   JoinTable,
 } from 'typeorm';
 @Entity()
-export class Foods {
+export class Products {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
@@ -39,15 +39,15 @@ export class Foods {
   @Column()
   description: string;
   
-  @ManyToOne(() =>UnitsOfMeansurement , (units_of_meansurement) => UnitsOfMeansurement.food)
+  @ManyToOne(() =>UnitsOfMeansurement , (units_of_meansurement) => UnitsOfMeansurement.product)
   unit_of_measurement: UnitsOfMeansurement[];
-  @OneToMany(() => Purchases, (purchase) => purchase.food)
+  @OneToMany(() => Purchases, (purchase) => purchase.product)
   purchases: Purchases[];
 
   @Column({ type: 'numeric' })  
   price: number;
 
-  @OneToMany(() => Images, (image) => image.food)
+  @OneToMany(() => Images, (image) => image.product)
   images: Images[];
 
   @CreateDateColumn({ name: 'created_at' })

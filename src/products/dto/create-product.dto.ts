@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
-export class CreateFoodDto {
+export class CreateProductDto {
   @IsNotEmpty()
   name: string;
 

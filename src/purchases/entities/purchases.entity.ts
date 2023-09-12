@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Users } from '../../users/entities/users.entity';
-import { Foods } from '../../foods/entities/foods.entity';
+import { Products } from '../../products/entities/products.entity';
 import { Images } from 'src/images/entities/images.entity';
 
 
@@ -28,8 +28,8 @@ export class Purchases {
 
   @ManyToOne(() => Images, (images) => images.purchases)
   image: Images;
-  @ManyToOne(() => Foods, (foods) => foods.purchases)
-  food: Foods;
+  @ManyToOne(() => Products, (products) => products.purchases)
+  product: Products;
 
   @Column()
   amount: number;

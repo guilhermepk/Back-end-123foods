@@ -1,4 +1,4 @@
-import { Foods } from 'src/foods/entities/foods.entity';
+import { Products } from 'src/products/entities/products.entity';
 import {
     Entity,
     Column,
@@ -11,10 +11,10 @@ export class UnitsOfMeansurement {
 
     @PrimaryGeneratedColumn()
     id: number;
-    @ManyToOne(() => Foods, (food) => food.unit_of_measurement)
-food: Foods;
+    @ManyToOne(() => Products, (product) => product.unit_of_measurement)
+product: Products;
 
     @Column()
     name: string;
-  static food: any;
+  static product: any;
 }

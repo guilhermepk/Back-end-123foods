@@ -5,5 +5,5 @@ export class CreateImageDto {
   path: string;
 
   @IsNumber()
-  foodId: number;
+  productId: number;
 }

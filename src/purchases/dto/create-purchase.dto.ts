@@ -12,7 +12,7 @@ export class CreatePurchaseDto {
   imageId: number;
   
   @IsNotEmpty()
-  foodId:number;
+  productId:number;
 
   @IsNotEmpty()
   amount: number;

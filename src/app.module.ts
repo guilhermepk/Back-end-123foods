@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigService } from './config/postgres.config.service';
-import { FoodsModule } from './foods/foods.module';
+import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 import { AppController } from './app controller';
 import { PurchasesModule } from './purchases/purchases.module';
@@ -18,7 +18,7 @@ import { UnitsOfMeansurementModule } from './units_of_meansurement/units_of_mean
 
 @Module({
   imports: [
-    FoodsModule,
+    ProductsModule,
 
     ConfigModule.forRoot({
       isGlobal: true,
@@ -27,7 +27,7 @@ import { UnitsOfMeansurementModule } from './units_of_meansurement/units_of_mean
       useClass: PostgresConfigService,
       inject: [PostgresConfigService],
     }),
-    FoodsModule,
+    ProductsModule,
     PurchasesModule,
     ImagesModule,
     MulterModule.register({
