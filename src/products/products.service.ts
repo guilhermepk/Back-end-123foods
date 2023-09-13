@@ -55,7 +55,7 @@ export class ProductsService {
     return this.productRepository.createQueryBuilder('product')
       .where('product.name ILIKE :filterValue', { filterValue: `%${filterValue}%` })
       .leftJoinAndSelect('product.images', 'image')
-      .leftJoinAndSelect('product.unit_of_measurement', 'unit_of_measurement')
+      .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
       .getMany();
   }
 
@@ -63,7 +63,7 @@ export class ProductsService {
     return this.productRepository.createQueryBuilder('product')
       .where('product.brand ILIKE :filterValue', { filterValue: `%${filterValue}%` })
       .leftJoinAndSelect('product.images', 'image')
-      .leftJoinAndSelect('product.unit_of_measurement', 'unit_of_measurement')
+      .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
       .getMany();
   }
 
@@ -71,7 +71,7 @@ export class ProductsService {
     return this.productRepository.createQueryBuilder('product')
       .where('product.category ILIKE :filterValue', { filterValue: `%${filterValue}%` })
       .leftJoinAndSelect('product.images', 'image')
-      .leftJoinAndSelect('product.unit_of_measurement', 'unit_of_measurement')
+      .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
       .getMany();
   }
 
@@ -79,7 +79,7 @@ export class ProductsService {
     return this.productRepository.createQueryBuilder('product')
       .where('product.description ILIKE :filterValue', { filterValue: `%${filterValue}%` })
       .leftJoinAndSelect('product.images', 'image')
-      .leftJoinAndSelect('product.unit_of_measurement', 'unit_of_measurement')
+      .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
       .getMany();
   }
 
@@ -125,21 +125,21 @@ export class ProductsService {
 
   async filterAll(filterType: string, filterValue: string): Promise<Products[]> {
     return this.productRepository.find({
-      where: { [filterType]: ILike(`%${filterValue}%`) }, relations: ['images',]
+      where: { [filterType]: ILike(`%${filterValue}%`) }, relations: ['images','units_of_measurements']
     });
   }
 
   async findOne(id: number): Promise<Products> {
     return this.productRepository.findOne({
       where: { id },
-      relations: ['images'], 
+      relations: ['images','units_of_measurements'], 
     });
   }
 
   async findAll(): Promise<Products[]> {
     return this.productRepository.createQueryBuilder('product')
       .leftJoinAndSelect('product.images', 'images')
-      .leftJoinAndSelect('product.unit_of_measurement', 'unit_of_measurement')
+      .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
       .getMany();
   }
   
