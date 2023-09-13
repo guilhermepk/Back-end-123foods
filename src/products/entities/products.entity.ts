@@ -22,7 +22,7 @@ export class Products {
   @Column()
   name: string;
 
-  @Column({ nullable: true })
+  @Column({ default: 'None', nullable: true })
   brand: string;
 
   @Column({ type: 'numeric' })

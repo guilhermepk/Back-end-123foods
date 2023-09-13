@@ -1,11 +1,12 @@
-import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateProductDto {
   @IsNotEmpty()
   name: string;
 
-  @IsNotEmpty()
-  brand: string = 'Nenhuma';
+  @IsOptional()
+  @IsString()
+  brand: string;
 
   // @IsNumber(undefined, { message: "O valor da propriedade 'weight' deve ser um número." })
   @IsNotEmpty()
