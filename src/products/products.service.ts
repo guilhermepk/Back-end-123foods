@@ -12,13 +12,27 @@ export class ProductsService {
   constructor(
     @InjectRepository(Products)
     private productRepository: Repository<Products>,
+    @InjectRepository(UnitsOfMeasurement)
+    private units_of_measurementRepository:Repository<UnitsOfMeasurement>,
     @InjectRepository(Images)
     private imageRepository: Repository<Images>,
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Products> {
-    const product = this.productRepository.create(createProductDto);
-    return this.productRepository.save(product);
+    const unit_of_measurement = await this.units_of_measurementRepository.findOne({
+      where: { id: createProductDto.unitsofmeasurementId },
+    });
+    if (!unit_of_measurement) throw new NotFoundException('Não encontrado  a  unidade de medida');
+    const newProduct= new Products();
+    newProduct.name=createProductDto.name;
+    newProduct.amount=createProductDto.amount;
+    newProduct.brand=createProductDto.brand;
+    newProduct.category=createProductDto.category;
+    newProduct.description=createProductDto.description;
+    newProduct.price=createProductDto.price;
+    newProduct.weight=createProductDto.weight;
+    newProduct.units_of_measurements=unit_of_measurement;
+    return this.productRepository.save(newProduct);
   }
 
   async createImage(path: string, productId): Promise<Images> {
@@ -137,6 +151,7 @@ export class ProductsService {
     product.name = updateProductDto.name;
     product.brand = updateProductDto.brand;
     product.weight = updateProductDto.weight;
+    
     product.category = updateProductDto.category;
     product.amount = updateProductDto.amount;
     product.description = updateProductDto.description;

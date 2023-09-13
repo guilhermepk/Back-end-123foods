@@ -17,6 +17,7 @@ import {
 } from 'typeorm';
 @Entity()
 export class Products {
+  [x: string]: any;
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
@@ -39,8 +40,8 @@ export class Products {
   @Column()
   description: string;
   
-  @ManyToOne(() =>UnitsOfMeasurement , (units_of_measurement) => UnitsOfMeasurement.product)
-  unit_of_measurement: UnitsOfMeasurement[];
+  @ManyToOne(() =>UnitsOfMeasurement, (units_of_measurements) => units_of_measurements.products)
+  units_of_measurements: UnitsOfMeasurement;
 
 
    @OneToMany(() => Purchases, (purchase) => purchase.product)
@@ -60,4 +61,5 @@ export class Products {
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt?: Date;
+
 }

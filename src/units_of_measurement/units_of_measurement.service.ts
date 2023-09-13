@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUnitsOfMeasurementDto } from './dto/create-units_of_measurement.dto';
-import { UpdateUnitsOfMeasurementDto } from './dto/update-units_of_measurement.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UnitsOfMeasurement } from './entities/units_of_measurement.entity';
 
 @Injectable()
 export class UnitsOfMeasurementService {
-  create(createUnitsOfMeasurementDto: CreateUnitsOfMeasurementDto) {
-    return 'This action adds a new unitsOfMeansurement';
+  constructor(
+    @InjectRepository(UnitsOfMeasurement)
+    private units_of_measurementRepository: Repository<UnitsOfMeasurement>
+    )
+    {}
+    
+  
+  async create(createUnitsOfMeasurementDto: CreateUnitsOfMeasurementDto):Promise<UnitsOfMeasurement> {
+    const unit_of_measurement=await this.units_of_measurementRepository.create(createUnitsOfMeasurementDto)
+    return this.units_of_measurementRepository.save(unit_of_measurement);
   }
 
-  findAll() {
-    return `This action returns all unitsOfMeansurement`;
+  findAll():Promise<UnitsOfMeasurement[]> {
+    return this.units_of_measurementRepository.find() ;
   }
+  
 
-  findOne(id: number) {
-    return `This action returns a #${id} unitsOfMeansurement`;
+  async findOne(id: number): Promise<UnitsOfMeasurement> {
+    return this.units_of_measurementRepository.findOne({ where: { id } });
   }
-
-  update(id: number, updateUnitsOfMeasurementDto: UpdateUnitsOfMeasurementDto) {
-    return `This action updates a #${id} unitsOfMeansurement`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} unitsOfMeansurement`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} unitsOfMeansurement`;
+  // }
 }

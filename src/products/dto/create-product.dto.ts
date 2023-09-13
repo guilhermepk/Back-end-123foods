@@ -13,7 +13,7 @@ export class CreateProductDto {
 
   
   @IsNotEmpty()
-  unitOfMeasurementId: number;
+  unitsofmeasurementId: number;
 
 
   @IsNotEmpty()
