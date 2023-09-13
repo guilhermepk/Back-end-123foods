@@ -14,7 +14,7 @@ import { BannersModule } from './banners/banners.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { AddressModule } from './address/address.module';
 import { CategoriesModule } from './categories/categories.module';
-import { UnitsOfMeansurementModule } from './units_of_meansurement/units_of_meansurement.module';
+import { UnitsOfMeasurementModule } from './units_of_measurement/units_of_measurement.module';
 
 @Module({
   imports: [
@@ -47,7 +47,7 @@ import { UnitsOfMeansurementModule } from './units_of_meansurement/units_of_mean
     NotificationsModule,
     AddressModule,
     CategoriesModule,
-    UnitsOfMeansurementModule,
+    UnitsOfMeasurementModule,
   ],
   controllers: [AppController],
 })

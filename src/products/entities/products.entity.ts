@@ -1,6 +1,6 @@
 import { Images } from 'src/images/entities/images.entity';
 import { Purchases } from 'src/purchases/entities/purchases.entity';
-import { UnitsOfMeansurement } from 'src/units_of_meansurement/entities/units_of_meansurement.entity';
+import { UnitsOfMeasurement } from 'src/units_of_measurement/entities/units_of_measurement.entity';
 import {
   Entity,
   Column,
@@ -39,9 +39,11 @@ export class Products {
   @Column()
   description: string;
   
-  @ManyToOne(() =>UnitsOfMeansurement , (units_of_meansurement) => UnitsOfMeansurement.product)
-  unit_of_measurement: UnitsOfMeansurement[];
-  @OneToMany(() => Purchases, (purchase) => purchase.product)
+  @ManyToOne(() =>UnitsOfMeasurement , (units_of_measurement) => UnitsOfMeasurement.product)
+  unit_of_measurement: UnitsOfMeasurement[];
+
+
+   @OneToMany(() => Purchases, (purchase) => purchase.product)
   purchases: Purchases[];
 
   @Column({ type: 'numeric' })  

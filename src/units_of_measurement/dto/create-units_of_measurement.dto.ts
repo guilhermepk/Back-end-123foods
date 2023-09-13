@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
-export class CreateUnitsOfMeansurementDto {
+export class CreateUnitsOfMeasurementDto {
     @IsNotEmpty()
     name: string;
     

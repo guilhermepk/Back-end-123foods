@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUnitsOfMeansurementDto } from './dto/create-units_of_meansurement.dto';
-import { UpdateUnitsOfMeansurementDto } from './dto/update-units_of_meansurement.dto';
+import { CreateUnitsOfMeasurementDto } from './dto/create-units_of_measurement.dto';
+import { UpdateUnitsOfMeasurementDto } from './dto/update-units_of_measurement.dto';
 
 @Injectable()
-export class UnitsOfMeansurementService {
-  create(createUnitsOfMeansurementDto: CreateUnitsOfMeansurementDto) {
+export class UnitsOfMeasurementService {
+  create(createUnitsOfMeasurementDto: CreateUnitsOfMeasurementDto) {
     return 'This action adds a new unitsOfMeansurement';
   }
 
@@ -16,7 +16,7 @@ export class UnitsOfMeansurementService {
     return `This action returns a #${id} unitsOfMeansurement`;
   }
 
-  update(id: number, updateUnitsOfMeansurementDto: UpdateUnitsOfMeansurementDto) {
+  update(id: number, updateUnitsOfMeasurementDto: UpdateUnitsOfMeasurementDto) {
     return `This action updates a #${id} unitsOfMeansurement`;
   }
 

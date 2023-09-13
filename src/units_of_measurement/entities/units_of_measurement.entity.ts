@@ -3,16 +3,18 @@ import {
     Entity,
     Column,
     PrimaryGeneratedColumn,
-    ManyToOne
+    ManyToOne,
+    OneToMany
    
   } from 'typeorm';
 @Entity()
-export class UnitsOfMeansurement {
+export class UnitsOfMeasurement {
 
     @PrimaryGeneratedColumn()
     id: number;
-    @ManyToOne(() => Products, (product) => product.unit_of_measurement)
-product: Products;
+    
+    @OneToMany(() => Products, (product) => product.unit_of_measurement)
+    product: Products;
 
     @Column()
     name: string;

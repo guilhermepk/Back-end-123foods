@@ -11,8 +11,9 @@ export class CreateProductDto {
   @IsNotEmpty()
   weight: number;
 
-  @IsNumber()
-    unit_of_measurementId: number;
+  
+  @IsNotEmpty()
+  unitOfMeasurementId: number;
 
 
   @IsNotEmpty()

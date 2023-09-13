@@ -5,6 +5,7 @@ import { Products } from './entities/products.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Images } from 'src/images/entities/images.entity';
+import { UnitsOfMeasurement } from 'src/units_of_measurement/entities/units_of_measurement.entity';
 
 @Injectable()
 export class ProductsService {
