@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { ArrayMinSize, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateProductDto {
   @IsNotEmpty()
@@ -17,8 +17,8 @@ export class CreateProductDto {
   unitsofmeasurementId: number;
 
 
-  @IsNotEmpty()
-  category: string;
+  @ArrayMinSize(1) 
+  categoryIds: number[];
 
   // @IsNumber(undefined, { message: "O valor da propriedade 'amount' deve ser um número." })
   @IsNotEmpty()

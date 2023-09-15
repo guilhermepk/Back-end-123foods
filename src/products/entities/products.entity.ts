@@ -1,3 +1,4 @@
+import { Category } from 'src/categories/entities/category.entity';
 import { Images } from 'src/images/entities/images.entity';
 import { Purchases } from 'src/purchases/entities/purchases.entity';
 import { UnitsOfMeasurement } from 'src/units_of_measurement/entities/units_of_measurement.entity';
@@ -31,8 +32,10 @@ export class Products {
 
   
 
-  @Column()
-  category: string;
+  @ManyToMany(() => Category, category => category.products)
+  @JoinTable({ name: 'category_products' }) 
+  categories: Category[];
+  
 
   @Column()
   amount: number;

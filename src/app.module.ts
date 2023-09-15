@@ -16,6 +16,7 @@ import { AddressModule } from './address/address.module';
 import { CategoriesModule } from './categories/categories.module';
 import { UnitsOfMeasurementModule } from './units_of_measurement/units_of_measurement.module';
 
+
 @Module({
   imports: [
     ProductsModule,

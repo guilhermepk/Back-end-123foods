@@ -6,6 +6,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Images } from 'src/images/entities/images.entity';
 import { UnitsOfMeasurement } from 'src/units_of_measurement/entities/units_of_measurement.entity';
+import { Category } from 'src/categories/entities/category.entity';
 
 @Injectable()
 export class ProductsService {
@@ -16,6 +17,8 @@ export class ProductsService {
     private units_of_measurementRepository:Repository<UnitsOfMeasurement>,
     @InjectRepository(Images)
     private imageRepository: Repository<Images>,
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>, 
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Products> {
@@ -23,16 +26,23 @@ export class ProductsService {
       where: { id: createProductDto.unitsofmeasurementId },
     });
     if (!unit_of_measurement) throw new NotFoundException('Não encontrado  a  unidade de medida');
-    const newProduct= new Products();
-    newProduct.name=createProductDto.name;
-    newProduct.amount=createProductDto.amount;
-    newProduct.brand=createProductDto.brand;
-    newProduct.category=createProductDto.category;
-    newProduct.description=createProductDto.description;
-    newProduct.price=createProductDto.price;
-    newProduct.weight=createProductDto.weight;
+    const newProduct = new Products();
+    newProduct.name = createProductDto.name;
+    newProduct.amount = createProductDto.amount;
+    newProduct.brand = createProductDto.brand;
+    newProduct.description = createProductDto.description;
+    newProduct.price = createProductDto.price;
+    newProduct.weight = createProductDto.weight;
     newProduct.units_of_measurements=unit_of_measurement;
+    const categories = await this.findCategoriesByIds(createProductDto.categoryIds);
+
+    newProduct.categories = categories; 
+
     return this.productRepository.save(newProduct);
+  }
+
+  async findCategoriesByIds(ids: number[]): Promise<Category[]> {
+    return this.categoryRepository.findByIds(ids);
   }
 
   async createImage(path: string, productId): Promise<Images> {
@@ -146,19 +156,22 @@ export class ProductsService {
   async update(id: number, updateProductDto: UpdateProductDto): Promise<Products> {
     const product = await this.productRepository.findOne({ where: { id } });
     if (!product) {
-      throw new NotFoundException('Product not found');
+      throw new NotFoundException('Produto não encontrado');
     }
+  
     product.name = updateProductDto.name;
     product.brand = updateProductDto.brand;
     product.weight = updateProductDto.weight;
-    
-    product.category = updateProductDto.category;
     product.amount = updateProductDto.amount;
     product.description = updateProductDto.description;
     product.price = updateProductDto.price;
-
+  
+    
+    const categories = await this.findCategoriesByIds(updateProductDto.categoryIds);
+    product.categories = categories;
+  
     const updatedProduct = await this.productRepository.save(product);
-
+  
     return updatedProduct;
   }
 

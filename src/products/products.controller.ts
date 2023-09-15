@@ -44,7 +44,7 @@ export class ProductsController {
     const product = await this.productsService.create(createProductDto);
     const image = await this.productsService.createImage(fileName, product.id);
 
-    return { product, image };
+    return { product, image};
   }
 
   @Get()

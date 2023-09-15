@@ -6,6 +6,7 @@ import { join } from 'path';
 import { AppModule } from './app.module';
 import * as cors from 'cors';
 import * as multer from 'multer';
+import { getConnection } from 'typeorm';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
@@ -24,6 +25,7 @@ async function bootstrap() {
 
   app.use(cors());
   await app.listen(3000);
+
 }
 
 bootstrap();
