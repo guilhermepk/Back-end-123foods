@@ -145,7 +145,7 @@ export class ProductsService {
   async findOne(id: number): Promise<Products> {
     return this.productRepository.findOne({
       where: { id },
-      relations: ['images','units_of_measurements'], 
+      relations: ['images', 'units_of_measurements', 'categories'], 
     });
   }
 
