@@ -82,8 +82,7 @@ export class ProductsService {
       .where('product.category ILIKE :filterValue', { filterValue: `%${filterValue}%` })
       .leftJoinAndSelect('product.images', 'image')
       .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
-      .leftJoin('product.categories', 'categories') 
-      .select(['product.id', 'product.name', 'categories.name']) 
+      .leftJoinAndSelect('product.categories', 'categories') 
       .getMany();
   }
 
@@ -92,9 +91,9 @@ export class ProductsService {
       .where('product.description ILIKE :filterValue', { filterValue: `%${filterValue}%` })
       .leftJoinAndSelect('product.images', 'image')
       .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
-      .leftJoin('product.categories', 'categories') 
-      .select(['product.id', 'product.name', 'categories.name']) 
+      .leftJoinAndSelect('product.categories', 'categories') 
       .getMany();
+      
   }
 
   productInList = (product, list) => {
@@ -154,8 +153,7 @@ export class ProductsService {
     return this.productRepository.createQueryBuilder('product')
       .leftJoinAndSelect('product.images', 'images')
       .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
-      .leftJoin('product.categories', 'categories') 
-      .select(['product.id', 'product.name', 'categories.name']) 
+      .leftJoinAndSelect('product.categories', 'categories') 
       .getMany();
   }
   
