@@ -8,7 +8,7 @@ export class CreateProductDto {
   @IsString()
   brand: string;
 
-  @IsNumber(undefined, { message: "O valor da propriedade 'weight' deve ser um número." })
+  // @IsNumber(undefined, { message: "O valor da propriedade 'weight' deve ser um número." })
   @IsNotEmpty()
   weight: number;
 
@@ -17,10 +17,11 @@ export class CreateProductDto {
   unitsofmeasurementId: number;
 
 
+  
   @ArrayMinSize(1) 
   categoryIds: number[];
 
-  @IsNumber(undefined, { message: "O valor da propriedade 'amount' deve ser um número." })
+  // @IsNumber(undefined, { message: "O valor da propriedade 'amount' deve ser um número." })
   @IsNotEmpty()
   amount: number;
 
@@ -28,6 +29,6 @@ export class CreateProductDto {
   description: string;
 
   @IsNotEmpty()
-  @IsNumber(undefined, { message: "O valor da propriedade 'price' deve ser um número." })
+  // @IsNumber(undefined, { message: "O valor da propriedade 'price' deve ser um número." })
   price: number;
 }

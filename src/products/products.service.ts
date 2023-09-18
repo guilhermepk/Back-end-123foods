@@ -150,6 +150,7 @@ export class ProductsService {
     return this.productRepository.createQueryBuilder('product')
       .leftJoinAndSelect('product.images', 'images')
       .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
+      // .leftJoinAndSelect('product.category_products', 'categoryIds')
       .getMany();
   }
   

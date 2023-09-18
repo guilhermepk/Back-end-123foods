@@ -29,6 +29,12 @@ export class ProductsController {
     @UploadedFile() file: Express.Multer.File,
     @Body() createProductDto: CreateProductDto,
   ) {
+    const { categoryIds } = createProductDto;
+
+    if (!Array.isArray(categoryIds) || categoryIds.length === 0) {
+      throw new BadRequestException('categoryIds must contain at least 1 element');
+    }
+    
     if (!file) {
       throw new BadRequestException('No file uploaded');
     }
