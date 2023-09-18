@@ -23,8 +23,9 @@ export class UnitsOfMeasurementController {
   }
 
 
-//   @Delete(':id')
-//   remove(@Param('id') id: string) {
-//     return this.unitsOfMeasurementService.remove(+id);
-//   }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.unitsOfMeasurementService.remove(+id);
+    
+  }
 }

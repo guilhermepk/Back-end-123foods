@@ -6,6 +6,7 @@ import { UnitsOfMeasurement } from './entities/units_of_measurement.entity';
 
 @Injectable()
 export class UnitsOfMeasurementService {
+  delete: any;
   constructor(
     @InjectRepository(UnitsOfMeasurement)
     private units_of_measurementRepository: Repository<UnitsOfMeasurement>
@@ -26,7 +27,11 @@ export class UnitsOfMeasurementService {
   async findOne(id: number): Promise<UnitsOfMeasurement> {
     return this.units_of_measurementRepository.findOne({ where: { id } });
   }
-  // remove(id: number) {
-  //   return `This action removes a #${id} unitsOfMeansurement`;
-  // }
+
+  async remove(id: number): Promise<void> {
+    const measureId = id;
+    const measure = await this.units_of_measurementRepository.delete(measureId );
+ 
+  }
+  
 }
