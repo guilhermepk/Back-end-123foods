@@ -13,8 +13,8 @@ export class CategoriesService {
     )
     {}
     async create(CreateCategoryDto: CreateCategoryDto):Promise<Category> {
-      const unit_of_measurement=await this.categoryRepository.create(CreateCategoryDto)
-      return this.categoryRepository.save(unit_of_measurement);
+      const category = await this.categoryRepository.create(CreateCategoryDto)
+      return this.categoryRepository.save(category);
     }
 
   findAll():Promise<Category[]> {
