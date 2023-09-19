@@ -87,13 +87,12 @@ export class ProductsService {
 
       let products = []
       if (categories[0]){
-        console.log(categories[0])
         products = await this.productRepository.createQueryBuilder('product')
           .leftJoinAndSelect('product.categories', 'category')
           .where('category.id IN (:...ids)', { ids: categories.map(category => category.id) })
           .getMany()
       }
-      
+
       return products;
     }catch (error){
       
