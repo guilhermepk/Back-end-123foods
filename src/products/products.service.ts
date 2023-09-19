@@ -90,6 +90,8 @@ export class ProductsService {
         products = await this.productRepository.createQueryBuilder('product')
           .leftJoinAndSelect('product.categories', 'category')
           .where('category.id IN (:...ids)', { ids: categories.map(category => category.id) })
+          .leftJoinAndSelect('product.images', 'images')
+          .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
           .getMany()
       }
 
@@ -151,9 +153,22 @@ export class ProductsService {
   }
 
   async filterAll(filterType: string, filterValue: string): Promise<Products[]> {
-    return this.productRepository.find({
-      where: { [filterType]: ILike(`%${filterValue}%`) }, relations: ['images','units_of_measurements','categories']
-    });
+    let products = []
+    if (filterType !== 'category'){
+      products = await this.productRepository.find({
+        where: { [filterType]: ILike(`%${filterValue}%`) }, relations: ['images','units_of_measurements','categories']
+      });
+    }else{
+      products = await this.productRepository.createQueryBuilder('product')
+        .leftJoinAndSelect('product.categories', 'category')
+        .where('category.name ILIKE :categoryName', { categoryName: `%${filterValue}%` })
+        .leftJoinAndSelect('product.images', 'images')
+        .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
+        .getMany()
+    }
+
+
+    return products;
   }
 
   async findOne(id: number): Promise<Products> {
