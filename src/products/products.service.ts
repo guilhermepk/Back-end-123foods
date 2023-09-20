@@ -210,10 +210,14 @@ export class ProductsService {
 
   async remove(id: number): Promise<void> {
     const productId = id;
-    const product = await this.imageRepository.delete(productId);
-    const result = await this.productRepository.delete(id);
-    if (result.affected === 0) {
+    const product = await this.productRepository.findOne({where:{id}});
+
+    if (!product) {
       throw new NotFoundException('Product not found');
     }
+    product.deletedAt = new Date();
+    
+    await this.productRepository.save(product);
   }
 }
+
