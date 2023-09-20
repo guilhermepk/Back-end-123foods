@@ -30,6 +30,8 @@ export class Products {
   @Column({ type: 'numeric' })
   weight: number;
 
+  @Column({nullable: true})
+  offer: number;
   
 
   @ManyToMany(() => Category, category => category.products)
@@ -47,7 +49,7 @@ export class Products {
   units_of_measurements: UnitsOfMeasurement;
 
 
-   @OneToMany(() => Purchases, (purchase) => purchase.product)
+  @OneToMany(() => Purchases, (purchase) => purchase.product)
   purchases: Purchases[];
 
   @Column({ type: 'numeric' })  

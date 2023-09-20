@@ -13,6 +13,9 @@ export class CreateProductDto {
   weight: number;
 
   
+  @IsOptional()
+  offer:number;
+  
   @IsNotEmpty()
   unitsofmeasurementId: number;
 

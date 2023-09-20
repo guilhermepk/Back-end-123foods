@@ -15,6 +15,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { AddressModule } from './address/address.module';
 import { CategoriesModule } from './categories/categories.module';
 import { UnitsOfMeasurementModule } from './units_of_measurement/units_of_measurement.module';
+import { OffersModule } from './offers/offers.module';
 
 
 @Module({
@@ -49,6 +50,7 @@ import { UnitsOfMeasurementModule } from './units_of_measurement/units_of_measur
     AddressModule,
     CategoriesModule,
     UnitsOfMeasurementModule,
+    OffersModule,
   ],
   controllers: [AppController],
 })
