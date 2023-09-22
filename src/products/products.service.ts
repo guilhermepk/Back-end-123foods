@@ -33,15 +33,15 @@ export class ProductsService {
     newProduct.description = createProductDto.description;
     newProduct.price = createProductDto.price;
     newProduct.weight = createProductDto.weight;
-    newProduct.units_of_measurements=unit_of_measurement;
-    const categories = await this.findCategoriesByIds(createProductDto.categoryIds);
+    newProduct.units_of_measurements = unit_of_measurement;
 
-    newProduct.categories = categories; 
+    newProduct.categories = await this.findCategoriesByIds(createProductDto.categoryIds);
 
     return this.productRepository.save(newProduct);
   }
 
   async findCategoriesByIds(ids: number[]): Promise<Category[]> {
+    console.log("procurando categorias", ids);
     return this.categoryRepository.findByIds(ids);
   }
 
@@ -199,9 +199,7 @@ export class ProductsService {
     product.description = updateProductDto.description;
     product.price = updateProductDto.price;
   
-    
-    const categories = await this.findCategoriesByIds(updateProductDto.categoryIds);
-    product.categories = categories;
+    if (updateProductDto.categoryIds) product.categories = await this.findCategoriesByIds(updateProductDto.categoryIds);
   
     const updatedProduct = await this.productRepository.save(product);
   
