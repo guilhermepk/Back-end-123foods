@@ -48,6 +48,7 @@ export class ProductsController {
     await fs.move(file.path, uploadPath);
 
     const product = await this.productsService.create(createProductDto);
+
     const image = await this.productsService.createImage(fileName, product.id);
 
     return { product, image};
@@ -95,8 +96,17 @@ export class ProductsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(+id, updateProductDto);
+  async update(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() updateProductDto: UpdateProductDto
+  ) {
+    const fileName = `${uuidv4()}-${file.originalname}`;
+    const uploadPath = './uploads/' + fileName;
+
+    await fs.move(file.path, uploadPath);
+
+    return this.productsService.update(+id, updateProductDto, file);
   }
 
   @Delete(':id')

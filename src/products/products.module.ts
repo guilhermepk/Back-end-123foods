@@ -6,11 +6,12 @@ import { Products } from './entities/products.entity';
 import { Images } from 'src/images/entities/images.entity';
 import { UnitsOfMeasurement } from 'src/units_of_measurement/entities/units_of_measurement.entity';
 import { Categories } from 'src/categories/entities/category.entity';
+import { ImagesService } from 'src/images/images.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Products, Images,UnitsOfMeasurement,Categories])],
   controllers: [ProductsController],
-  providers: [ProductsService],
+  providers: [ProductsService, ImagesService],
   exports: [ProductsService],
 })
 export class ProductsModule {}

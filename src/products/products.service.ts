@@ -7,6 +7,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { Images } from 'src/images/entities/images.entity';
 import { UnitsOfMeasurement } from 'src/units_of_measurement/entities/units_of_measurement.entity';
 import { Categories } from 'src/categories/entities/category.entity';
+import { ImagesService } from 'src/images/images.service';
 
 @Injectable()
 export class ProductsService {
@@ -15,10 +16,9 @@ export class ProductsService {
     private productRepository: Repository<Products>,
     @InjectRepository(UnitsOfMeasurement)
     private units_of_measurementRepository:Repository<UnitsOfMeasurement>,
-    @InjectRepository(Images)
-    private imageRepository: Repository<Images>,
     @InjectRepository(Categories)
     private readonly categoryRepository: Repository<Categories>, 
+    private readonly imagesService: ImagesService
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Products> {
@@ -40,17 +40,20 @@ export class ProductsService {
     return this.productRepository.save(newProduct);
   }
 
-  async findCategoriesByIds(ids: number[]): Promise<Categories[]> {
-    console.log("procurando categorias", ids);
-    return this.categoryRepository.findByIds(ids);
+  async createImage(path, productId){
+    const imageObject = {
+      path: path,
+      productId: productId
+    }
+    return await this.imagesService.create(imageObject);
   }
 
-  async createImage(path: string, productId): Promise<Images> {
-    const newImage = new Images();
-    newImage.path = path;
-    newImage.product = productId;
+  async updateImage(){
+    
+  }
 
-    return this.imageRepository.save(newImage);
+  async findCategoriesByIds(ids: number[]): Promise<Categories[]> {
+    return this.categoryRepository.findByIds(ids);
   }
 
   async priceAll(minPrice: number, maxPrice: number): Promise<Products[]> {
@@ -193,7 +196,7 @@ export class ProductsService {
       .getMany();
   }
   
-  async update(id: number, updateProductDto: UpdateProductDto): Promise<Products> {
+  async update(id: number, updateProductDto: UpdateProductDto, file): Promise<Products> {
     const product = await this.productRepository.findOne({ where: { id } });
     if (!product) {
       throw new NotFoundException('Produto não encontrado');
@@ -207,6 +210,7 @@ export class ProductsService {
     product.price = updateProductDto.price;
   
     if (updateProductDto.categoryIds) product.categories = await this.findCategoriesByIds(updateProductDto.categoryIds);
+    if (file) this.imagesService.update(product.id, file)
   
     const updatedProduct = await this.productRepository.save(product);
   

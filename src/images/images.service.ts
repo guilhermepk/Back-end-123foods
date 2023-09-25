@@ -16,23 +16,33 @@ export class ImagesService {
     return this.imageRepository.find();
   }
 
-  async create(createImageDto: CreateImageDto): Promise<Images> {
-    const image = this.imageRepository.create(createImageDto);
-    return this.imageRepository.save(image);
+  async create(imageObject): Promise<Images> {
+    const newImage = new Images();
+    newImage.path = imageObject.path;
+    newImage.product = imageObject.productId;
+
+    return this.imageRepository.save(newImage);
   }
 
   async findOne(id: number): Promise<Images> {
     return this.imageRepository.findOne({ where: { id } });
   }
 
-  async update(id: number, updateImageDto: UpdateImageDto): Promise<Images> {
-    const image = await this.imageRepository.findOne({ where: { id } });
+  async update(productId, file): Promise<Images> {
+    const image = (await this.imageRepository.createQueryBuilder('image')
+      .leftJoinAndSelect('image.product', 'product')
+      .where('product.id = :productId', { productId: productId })
+      .getMany())[0]
+
     if (!image) {
       throw new NotFoundException('Image not found');
     }
 
-    image.path = updateImageDto.path;
-    image.product.id = updateImageDto.productId;
+    console.log('imagem encontrada:', image)
+    console.log('imagem recebida:', file)
+
+    
+    // await fs.move(file.path, uploadPath);
 
     const updatedImage = await this.imageRepository.save(image);
 
