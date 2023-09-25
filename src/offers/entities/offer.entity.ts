@@ -1,3 +1,4 @@
+import { Categories } from 'src/categories/entities/category.entity';
 import {
     Entity,
     Column,
@@ -13,4 +14,8 @@ export class Offers {
     
     @Column()
     offer:number;
+
+    @OneToMany( ()=> Categories, (category) => category.offer)
+    categories: Categories[];
+    
 }

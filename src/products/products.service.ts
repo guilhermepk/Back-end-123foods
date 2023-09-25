@@ -6,7 +6,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Images } from 'src/images/entities/images.entity';
 import { UnitsOfMeasurement } from 'src/units_of_measurement/entities/units_of_measurement.entity';
-import { Category } from 'src/categories/entities/category.entity';
+import { Categories } from 'src/categories/entities/category.entity';
 
 @Injectable()
 export class ProductsService {
@@ -17,8 +17,8 @@ export class ProductsService {
     private units_of_measurementRepository:Repository<UnitsOfMeasurement>,
     @InjectRepository(Images)
     private imageRepository: Repository<Images>,
-    @InjectRepository(Category)
-    private readonly categoryRepository: Repository<Category>, 
+    @InjectRepository(Categories)
+    private readonly categoryRepository: Repository<Categories>, 
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Products> {
@@ -40,7 +40,7 @@ export class ProductsService {
     return this.productRepository.save(newProduct);
   }
 
-  async findCategoriesByIds(ids: number[]): Promise<Category[]> {
+  async findCategoriesByIds(ids: number[]): Promise<Categories[]> {
     console.log("procurando categorias", ids);
     return this.categoryRepository.findByIds(ids);
   }

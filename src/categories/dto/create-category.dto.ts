@@ -4,6 +4,9 @@ export class CreateCategoryDto {
     @IsNotEmpty()
     name: string;
 
+    @IsOptional()
+    offerId?:number;
+
     
 
 }

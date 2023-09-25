@@ -1,4 +1,4 @@
-import { Category } from 'src/categories/entities/category.entity';
+import { Categories } from 'src/categories/entities/category.entity';
 import { Images } from 'src/images/entities/images.entity';
 import { Purchases } from 'src/purchases/entities/purchases.entity';
 import { UnitsOfMeasurement } from 'src/units_of_measurement/entities/units_of_measurement.entity';
@@ -23,7 +23,6 @@ export class Products {
   id: number;
   @Column()
   name: string;
-
   @Column({ default: 'None', nullable: true })
   brand: string;
 
@@ -34,9 +33,9 @@ export class Products {
   offer: number;
   
 
-  @ManyToMany(() => Category, category => category.products)
+  @ManyToMany(() => Categories, category => category.products)
   @JoinTable({ name: 'category_products' }) 
-  categories: Category[];
+  categories: Categories[];
   
 
   @Column()

@@ -1,23 +1,38 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { Category } from './entities/category.entity';
+import { Categories } from './entities/category.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Offers } from 'src/offers/entities/offer.entity';
 
 @Injectable()
 export class CategoriesService {
   constructor(
-    @InjectRepository(Category)
-    private categoryRepository: Repository<Category>
+    @InjectRepository(Categories)
+    private categoryRepository: Repository<Categories>,
+    @InjectRepository(Offers)
+    private offerRepository: Repository<Offers>
     )
     {}
-    async create(CreateCategoryDto: CreateCategoryDto):Promise<Category> {
-      const category = await this.categoryRepository.create(CreateCategoryDto)
-      return this.categoryRepository.save(category);
+    async create(CreateCategoryDto: CreateCategoryDto): Promise<Categories> {
+      const newCategory = new Categories();
+      newCategory.name = CreateCategoryDto.name;
+    
+      const offerId = CreateCategoryDto.offerId;
+      if (offerId) {
+        const offer = await this.offerRepository.findOne({ where: { id: offerId } });
+        if (!offer) {
+          throw new NotFoundException(`Offer with ID ${offerId} not found`);
+        }
+        newCategory.offer = offer;
+      }
+    
+      return this.categoryRepository.save(newCategory);
     }
-
-  findAll():Promise<Category[]> {
+    
+    
+  findAll():Promise<Categories[]> {
     return this.categoryRepository.find() ;
   }
 

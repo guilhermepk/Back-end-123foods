@@ -5,10 +5,10 @@ import { ProductsService } from './products.service';
 import { Products } from './entities/products.entity';
 import { Images } from 'src/images/entities/images.entity';
 import { UnitsOfMeasurement } from 'src/units_of_measurement/entities/units_of_measurement.entity';
-import { Category } from 'src/categories/entities/category.entity';
+import { Categories } from 'src/categories/entities/category.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Products, Images,UnitsOfMeasurement,Category])],
+  imports: [TypeOrmModule.forFeature([Products, Images,UnitsOfMeasurement,Categories])],
   controllers: [ProductsController],
   providers: [ProductsService],
   exports: [ProductsService],
