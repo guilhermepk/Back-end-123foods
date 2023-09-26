@@ -53,6 +53,11 @@ export class ProductsController {
 
     return { product, image};
   }
+  @Get('/similar/:id')
+  async findSimilar(@Param('id') productId: number){
+    console.log("similar usado", productId)
+    return await this.productsService.findSimilar(productId);
+  }
 
   @Get()
   findAll() {
@@ -110,13 +115,8 @@ export class ProductsController {
 
     return this.productsService.update(+id, updateProductDto, file);
   }
-  @Get('by-categories')
-  async getProductsByCategories(@Query('categoryIds') categoryIds: string) {
-    const categoryIdArray = categoryIds.split(',').map(Number);
-    console.log("teste",categoryIdArray);
-
-    return this.productsService.searchProductsByCategories(categoryIdArray);
-  }
+  
+  
 
   @Delete(':id')
   remove(@Param('id') id: string) {

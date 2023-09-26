@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, ILike, Repository } from 'typeorm';
+import { Between, ILike, In, Not, Repository } from 'typeorm';
 import { Products } from './entities/products.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -108,25 +108,33 @@ export class ProductsService {
     }
   }
 
-  async searchProductsByCategories(categoryIds: number[]): Promise<Products[]> {
-    try {
-      if (categoryIds.length === 0) {
-        return [];
-      }
-  
-      const products = await this.productRepository.createQueryBuilder('product')
-        .leftJoinAndSelect('product.categories', 'categories')
-        .where('categories.id IN (:...ids)', { ids: categoryIds })
-        .leftJoinAndSelect('product.images', 'images')
-        .leftJoinAndSelect('categories.offer', 'offer') 
-        .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
-        .getMany();
-  
-      return products;
-    } catch (error) {
-      throw error;
+  async findSimilar(productId: number): Promise<Products[]> {
+    const product = await this.productRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.categories', 'category')
+      .where('product.id = :productId', { productId: productId })
+      .getOne();
+
+    if (!product) {
+      throw new Error('Produto não encontrado');
     }
+
+    const productCategories = product.categories.map((category) => category.id);
+
+    const similarProducts = await this.productRepository
+      .createQueryBuilder('product')
+      .innerJoinAndSelect('product.categories', 'category')
+      .where('category.id IN (:...categories)', { categories: productCategories })
+      .andWhere('product.id != :productId', { productId: productId })
+      .getMany();
+
+    return similarProducts;
   }
+
+
+
+
+
 
 
   async searchDescription(filterValue: string): Promise<Products[]> {
@@ -233,6 +241,7 @@ export class ProductsService {
   
     if (updateProductDto.categoriesIds) product.categories = await this.findCategoriesByIds(updateProductDto.categoriesIds);
     if (file !== undefined) this.imagesService.update(product.id, file)
+    if (file) this.imagesService.update(product.id, file)
   
     const updatedProduct = await this.productRepository.save(product);
   
