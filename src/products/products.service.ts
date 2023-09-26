@@ -232,7 +232,7 @@ export class ProductsService {
     product.price = updateProductDto.price;
   
     if (updateProductDto.categoriesIds) product.categories = await this.findCategoriesByIds(updateProductDto.categoriesIds);
-    if (file) this.imagesService.update(product.id, file)
+    if (file !== undefined) this.imagesService.update(product.id, file)
   
     const updatedProduct = await this.productRepository.save(product);
   

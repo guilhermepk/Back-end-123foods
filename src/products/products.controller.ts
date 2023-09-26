@@ -101,10 +101,12 @@ export class ProductsController {
     @UploadedFile() file: Express.Multer.File,
     @Body() updateProductDto: UpdateProductDto
   ) {
-    const fileName = `${uuidv4()}-${file.originalname}`;
-    const uploadPath = './uploads/' + fileName;
-
-    await fs.move(file.path, uploadPath);
+    if (file){
+      const fileName = `${uuidv4()}-${file.originalname}`;
+      const uploadPath = './uploads/' + fileName;
+  
+      await fs.move(file.path, uploadPath);
+    }
 
     return this.productsService.update(+id, updateProductDto, file);
   }
