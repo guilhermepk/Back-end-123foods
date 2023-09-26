@@ -109,6 +109,7 @@ export class ProductsService {
   }
 
   async findSimilar(productId: number): Promise<Products[]> {
+    
     const product = await this.productRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.categories', 'category')
@@ -123,19 +124,15 @@ export class ProductsService {
 
     const similarProducts = await this.productRepository
       .createQueryBuilder('product')
-      .innerJoinAndSelect('product.categories', 'category')
-      .where('category.id IN (:...categories)', { categories: productCategories })
+      .innerJoin('product.categories', 'category')
+      .groupBy('product.id') 
+      .having('COUNT(category.id) >= 2') 
+      .andHaving('COUNT(category.id) = :categoryCount', { categoryCount: productCategories.length }) 
       .andWhere('product.id != :productId', { productId: productId })
       .getMany();
 
     return similarProducts;
   }
-
-
-
-
-
-
 
   async searchDescription(filterValue: string): Promise<Products[]> {
     const products = await this.productRepository.createQueryBuilder('product')
