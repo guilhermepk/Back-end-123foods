@@ -222,6 +222,14 @@ export class ProductsService {
       .leftJoinAndSelect('categories.offer', 'offer') 
       .getMany();
   }
+
+  async findImage(productId){
+    return this.imagesService.findByProductId(productId);
+  }
+
+  async removeImage(imageId){
+    this.imagesService.remove(imageId);
+  }
   
   async update(id: number, updateProductDto: UpdateProductDto, file): Promise<Products> {
     const product = await this.productRepository.findOne({ where: { id } });
@@ -236,9 +244,8 @@ export class ProductsService {
     product.description = updateProductDto.description;
     product.price = updateProductDto.price;
   
+    console.log('up', updateProductDto)
     if (updateProductDto.categoriesIds) product.categories = await this.findCategoriesByIds(updateProductDto.categoriesIds);
-    if (file !== undefined) this.imagesService.update(product.id, file)
-    if (file) this.imagesService.update(product.id, file)
   
     const updatedProduct = await this.productRepository.save(product);
   

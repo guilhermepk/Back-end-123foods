@@ -111,11 +111,17 @@ export class ProductsController {
       const uploadPath = './uploads/' + fileName;
   
       await fs.move(file.path, uploadPath);
+
+      const currentImage = await this.productsService.findImage(id);
+      fs.unlink("./uploads/"+currentImage.path);
+      this.productsService.removeImage(currentImage.id)
+
+      const newImage = await this.productsService.createImage(fileName, id);
     }
 
     return this.productsService.update(+id, updateProductDto, file);
   }
-  
+  //uploads/0fab28852c2c52f993c2ec03d4855386
   
 
   @Delete(':id')

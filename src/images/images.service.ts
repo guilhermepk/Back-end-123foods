@@ -28,7 +28,7 @@ export class ImagesService {
     return this.imageRepository.findOne({ where: { id } });
   }
 
-  async update(productId, file): Promise<Images> {
+  async findByProductId(productId){
     const image = (await this.imageRepository.createQueryBuilder('image')
       .leftJoinAndSelect('image.product', 'product')
       .where('product.id = :productId', { productId: productId })
@@ -38,15 +38,20 @@ export class ImagesService {
       throw new NotFoundException('Image not found');
     }
 
-    console.log('imagem encontrada:', image)
-    console.log('imagem recebida:', file)
+    return image
+  }
 
-    
-    // await fs.move(file.path, uploadPath);
+  async update(productId, file){
+    // const image = await this.findByProductId(productId);
 
-    const updatedImage = await this.imageRepository.save(image);
+    // console.log('imagem encontrada:', image);
+    // console.log('imagem recebida:', file);
 
-    return updatedImage;
+    // const updatedImage = await this.imageRepository.save(file);
+
+    // return updatedImage;
+
+    console.log('o update image não faz nada')
   }
 
   async remove(id: number): Promise<void> {
