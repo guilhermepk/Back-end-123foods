@@ -22,7 +22,7 @@ export class CreateProductDto {
 
   
   @ArrayMinSize(1) 
-  categoryIds: number[];
+  categoriesIds: number[];
 
   // @IsNumber(undefined, { message: "O valor da propriedade 'amount' deve ser um número." })
   @IsNotEmpty()

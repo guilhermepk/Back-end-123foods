@@ -29,9 +29,9 @@ export class ProductsController {
     @UploadedFile() file: Express.Multer.File,
     @Body() createProductDto: CreateProductDto,
   ) {
-    const { categoryIds } = createProductDto;
+    const { categoriesIds } = createProductDto;
 
-    if (!Array.isArray(categoryIds) || categoryIds.length === 0) {
+    if (!Array.isArray(categoriesIds) || categoriesIds.length === 0) {
       throw new BadRequestException('categoryIds must contain at least 1 element');
     }
     
@@ -75,7 +75,7 @@ export class ProductsController {
     if (
       filterType === 'name' ||
       filterType === 'brand' ||
-      filterType === 'category' ||
+      filterType === 'categories' ||
       filterType === 'description'
     ) {
       return this.productsService.filterAll(filterType, filterValue);
@@ -107,6 +107,13 @@ export class ProductsController {
     await fs.move(file.path, uploadPath);
 
     return this.productsService.update(+id, updateProductDto, file);
+  }
+  @Get('by-categories')
+  async getProductsByCategories(@Query('categoryIds') categoryIds: string) {
+    const categoryIdArray = categoryIds.split(',').map(Number);
+    console.log("teste",categoryIdArray);
+
+    return this.productsService.searchProductsByCategories(categoryIdArray);
   }
 
   @Delete(':id')

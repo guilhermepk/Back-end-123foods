@@ -6,8 +6,9 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Images } from 'src/images/entities/images.entity';
 import { UnitsOfMeasurement } from 'src/units_of_measurement/entities/units_of_measurement.entity';
-import { Categories } from 'src/categories/entities/category.entity';
+import { Categories } from 'src/categories/entities/categories.entity';
 import { ImagesService } from 'src/images/images.service';
+import { ProductsController } from './products.controller';
 
 @Injectable()
 export class ProductsService {
@@ -17,7 +18,7 @@ export class ProductsService {
     @InjectRepository(UnitsOfMeasurement)
     private units_of_measurementRepository:Repository<UnitsOfMeasurement>,
     @InjectRepository(Categories)
-    private readonly categoryRepository: Repository<Categories>, 
+    private readonly categoriesRepository: Repository<Categories>, 
     private readonly imagesService: ImagesService
   ) {}
 
@@ -35,7 +36,7 @@ export class ProductsService {
     newProduct.weight = createProductDto.weight;
     newProduct.units_of_measurements = unit_of_measurement;
 
-    newProduct.categories = await this.findCategoriesByIds(createProductDto.categoryIds);
+    newProduct.categories = await this.findCategoriesByIds(createProductDto.categoriesIds);
 
     return this.productRepository.save(newProduct);
   }
@@ -53,7 +54,7 @@ export class ProductsService {
   }
 
   async findCategoriesByIds(ids: number[]): Promise<Categories[]> {
-    return this.categoryRepository.findByIds(ids);
+    return this.categoriesRepository.findByIds(ids);
   }
 
   async priceAll(minPrice: number, maxPrice: number): Promise<Products[]> {
@@ -84,17 +85,17 @@ export class ProductsService {
       .getMany();
   }
 
-  async searchCategory(filterValue: string){
+  async searchCategories(filterValue: string){
     try{
-      const categories = await this.categoryRepository.createQueryBuilder('category')
-        .where('category.name ILIKE :name', { name: `%${filterValue}%` })
+      const categories = await this.categoriesRepository.createQueryBuilder('categories')
+        .where('categories.name ILIKE :name', { name: `%${filterValue}%` })
         .getMany()
 
       let products = []
       if (categories[0]){
         products = await this.productRepository.createQueryBuilder('product')
-          .leftJoinAndSelect('product.categories', 'category')
-          .where('category.id IN (:...ids)', { ids: categories.map(category => category.id) })
+          .leftJoinAndSelect('product.categories', 'categories')
+          .where('categories.id IN (:...ids)', { ids: categories.map(categories => categories.id) })
           .leftJoinAndSelect('product.images', 'images')
           .leftJoinAndSelect('categories.offer', 'offer') 
           .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
@@ -107,13 +108,34 @@ export class ProductsService {
     }
   }
 
+  async searchProductsByCategories(categoryIds: number[]): Promise<Products[]> {
+    try {
+      if (categoryIds.length === 0) {
+        return [];
+      }
+  
+      const products = await this.productRepository.createQueryBuilder('product')
+        .leftJoinAndSelect('product.categories', 'categories')
+        .where('categories.id IN (:...ids)', { ids: categoryIds })
+        .leftJoinAndSelect('product.images', 'images')
+        .leftJoinAndSelect('categories.offer', 'offer') 
+        .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
+        .getMany();
+  
+      return products;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
   async searchDescription(filterValue: string): Promise<Products[]> {
     const products = await this.productRepository.createQueryBuilder('product')
       .where('product.description ILIKE :filterValue', { filterValue: `%${filterValue}%` })
       .leftJoinAndSelect('product.images', 'images')
       .leftJoinAndSelect('categories.offer', 'offer') 
       .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
-      .leftJoinAndSelect('product.categories', 'categoryId') 
+      .leftJoinAndSelect('product.categories', 'categoriesId') 
       .getMany();
       
       return products;
@@ -136,7 +158,7 @@ export class ProductsService {
   async search(filterValue: string): Promise<Products[]> {
     const names = [...await this.searchName(filterValue)];
     const brands = [...await this.searchBrand(filterValue)];
-    const categories = [...await this.searchCategory(filterValue)];
+    const categories = [...await this.searchCategories(filterValue)];
     const descriptions = [...await this.searchDescription(filterValue)];
     let products = [...names]
 
@@ -161,14 +183,14 @@ export class ProductsService {
 
   async filterAll(filterType: string, filterValue: string): Promise<Products[]> {
     let products = []
-    if (filterType !== 'category'){
+    if (filterType !== 'categories'){
       products = await this.productRepository.find({
         where: { [filterType]: ILike(`%${filterValue}%`) }, relations: ['images','units_of_measurements','categories']
       });
     }else{
       products = await this.productRepository.createQueryBuilder('product')
-        .leftJoinAndSelect('product.categories', 'category')
-        .where('category.name ILIKE :categoryName', { categoryName: `%${filterValue}%` })
+        .leftJoinAndSelect('product.categories', 'categories')
+        .where('categories.name ILIKE :categoriesName', { categoriesName: `%${filterValue}%` })
         .leftJoinAndSelect('product.images', 'images')
         .leftJoinAndSelect('categories.offer', 'offer') 
         .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
@@ -209,7 +231,7 @@ export class ProductsService {
     product.description = updateProductDto.description;
     product.price = updateProductDto.price;
   
-    if (updateProductDto.categoryIds) product.categories = await this.findCategoriesByIds(updateProductDto.categoryIds);
+    if (updateProductDto.categoriesIds) product.categories = await this.findCategoriesByIds(updateProductDto.categoriesIds);
     if (file) this.imagesService.update(product.id, file)
   
     const updatedProduct = await this.productRepository.save(product);

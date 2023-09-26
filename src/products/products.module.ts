@@ -5,7 +5,7 @@ import { ProductsService } from './products.service';
 import { Products } from './entities/products.entity';
 import { Images } from 'src/images/entities/images.entity';
 import { UnitsOfMeasurement } from 'src/units_of_measurement/entities/units_of_measurement.entity';
-import { Categories } from 'src/categories/entities/category.entity';
+import { Categories } from 'src/categories/entities/categories.entity';
 import { ImagesService } from 'src/images/images.service';
 
 @Module({

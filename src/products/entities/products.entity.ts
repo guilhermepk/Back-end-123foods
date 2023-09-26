@@ -1,4 +1,4 @@
-import { Categories } from 'src/categories/entities/category.entity';
+import { Categories } from 'src/categories/entities/categories.entity';
 import { Images } from 'src/images/entities/images.entity';
 import { Purchases } from 'src/purchases/entities/purchases.entity';
 import { UnitsOfMeasurement } from 'src/units_of_measurement/entities/units_of_measurement.entity';
@@ -33,7 +33,7 @@ export class Products {
   offer: number;
   
 
-  @ManyToMany(() => Categories, category => category.products)
+  @ManyToMany(() => Categories, categories => categories.products)
   @JoinTable({ name: 'category_products' }) 
   categories: Categories[];
   
