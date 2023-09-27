@@ -109,30 +109,33 @@ export class ProductsService {
   }
 
   async findSimilar(productId: number): Promise<Products[]> {
-    
     const product = await this.productRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.categories', 'category')
       .where('product.id = :productId', { productId: productId })
       .getOne();
-
+  
     if (!product) {
       throw new Error('Produto não encontrado');
     }
-
+  
     const productCategories = product.categories.map((category) => category.id);
-
+  
     const similarProducts = await this.productRepository
       .createQueryBuilder('product')
       .innerJoin('product.categories', 'category')
-      .groupBy('product.id') 
-      .having('COUNT(category.id) >= 2') 
-      .andHaving('COUNT(category.id) = :categoryCount', { categoryCount: productCategories.length }) 
+      .leftJoinAndSelect('product.images', 'images')
+      .addGroupBy('product.id')
+      .addGroupBy('images.id') 
+      .having('COUNT(category.id) >= 2')
+      .andHaving('COUNT(category.id) = :categoryCount', { categoryCount: productCategories.length })
       .andWhere('product.id != :productId', { productId: productId })
       .getMany();
-
+  
     return similarProducts;
   }
+  
+  
 
   async searchDescription(filterValue: string): Promise<Products[]> {
     const products = await this.productRepository.createQueryBuilder('product')

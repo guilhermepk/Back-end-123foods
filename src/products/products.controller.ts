@@ -55,7 +55,6 @@ export class ProductsController {
   }
   @Get('/similar/:id')
   async findSimilar(@Param('id') productId: number){
-    console.log("similar usado", productId)
     return await this.productsService.findSimilar(productId);
   }
 
