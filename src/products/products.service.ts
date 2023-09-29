@@ -36,11 +36,9 @@ export class ProductsService {
     newProduct.price = createProductDto.price;
     newProduct.weight = createProductDto.weight;
     newProduct.units_of_measurements = unit_of_measurement;
-
     newProduct.categories = await this.findCategoriesByIds(createProductDto.categoriesIds);
-
     return this.productRepository.save(newProduct);
-  }
+  };
 
   async createImage(path, productId){
     const imageObject = {
@@ -48,15 +46,14 @@ export class ProductsService {
       productId: productId
     }
     return await this.imagesService.create(imageObject);
-  }
+  };
 
   async updateImage(){
-    
-  }
+  };
 
   async findCategoriesByIds(ids: number[]): Promise<Categories[]> {
     return this.categoriesRepository.findByIds(ids);
-  }
+  };
 
   async priceAll(minPrice: number, maxPrice: number): Promise<Products[]> {
     return this.productRepository.find({
@@ -74,7 +71,7 @@ export class ProductsService {
       .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
       .leftJoinAndSelect('product.categories', 'categories')
       .getMany();
-  }
+  };
 
   async searchBrand(filterValue: string): Promise<Products[]> {
     return this.productRepository.createQueryBuilder('product')
@@ -84,14 +81,13 @@ export class ProductsService {
       .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
       .leftJoinAndSelect('product.categories', 'categories')
       .getMany();
-  }
+  };
 
   async searchCategories(filterValue: string){
     try{
       const categories = await this.categoriesRepository.createQueryBuilder('categories')
         .where('categories.name ILIKE :name', { name: `%${filterValue}%` })
         .getMany()
-
       let products = []
       if (categories[0]){
         products = await this.productRepository.createQueryBuilder('product')
@@ -102,12 +98,10 @@ export class ProductsService {
           .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
           .getMany()
       }
-
       return products;
-    }catch (error){
-      
+    }catch (error){   
     }
-  }
+  };
 
   async findSimilar(productId: number): Promise<Products[]> {
     const query = `
@@ -119,7 +113,7 @@ export class ProductsService {
     p.description AS description,
     p.price AS price,
     i.*,
-    STRING_AGG(c.name, ', ') AS category_names -- Agrupa todas as categorias em uma única coluna
+    STRING_AGG(c.name, ', ') AS category_names 
 FROM
     products p
 JOIN
@@ -129,49 +123,40 @@ JOIN
 JOIN
     categories c ON cp."categoriesId" = c.id
 WHERE
-    p.id <> ${productId} -- Exclui o produto com o ID especificado (variável)
+    p.id <> ${productId} 
     AND EXISTS (
-        -- Subconsulta para verificar a existência de produtos com pelo menos 2 categorias em comum com o produto especificado
         SELECT 1
         FROM category_products cp1
         WHERE cp1."productsId" = p.id
         AND cp1."categoriesId" IN (
-            -- Subconsulta para obter as categorias do produto especificado (variável)
             SELECT "categoriesId"
             FROM category_products
-            WHERE "productsId" = ${productId} -- ID do produto especificado (variável)
+            WHERE "productsId" = ${productId} 
         )
         GROUP BY cp1."productsId"
         HAVING COUNT(DISTINCT cp1."categoriesId") >= 2
     )
     AND p.id = (
-        -- Subconsulta para selecionar o produto com o maior ID dentro do mesmo grupo de categorias do produto especificado
         SELECT MAX(p2.id)
         FROM products p2
         JOIN category_products cp2 ON p2.id = cp2."productsId"
         WHERE cp2."productsId" = p.id
         AND cp2."categoriesId" IN (
-            -- Subconsulta para obter as categorias do produto especificado (variável)
             SELECT "categoriesId"
             FROM category_products
-            WHERE "productsId" = ${productId} -- ID do produto especificado (variável)
+            WHERE "productsId" = ${productId} 
         )
         GROUP BY cp2."productsId"
     )
     GROUP BY p.id, p.name, p.brand, p.weight, p.amount, p.description, p.price, i.id, i.path;
-
     `;
-
     try {
       const result = await this.productRepository.query(query);
       return result;
     } catch (error) {
       throw new Error(`Erro na consulta SQL: ${error.message}`);
     }
-  }
-  
-  
-  
+  };
 
   async searchDescription(filterValue: string): Promise<Products[]> {
     const products = await this.productRepository.createQueryBuilder('product')
@@ -183,7 +168,7 @@ WHERE
       .getMany();
       
       return products;
-  }
+  };
 
   productInList = (product, list) => {
     if (list.length < 1){
@@ -197,7 +182,7 @@ WHERE
     })
 
     return inside
-  }
+  };
 
   async search(filterValue: string): Promise<Products[]> {
     const names = [...await this.searchName(filterValue)];
@@ -223,7 +208,7 @@ WHERE
     })
 
     return products;
-  }
+  };
 
   async filterAll(filterType: string, filterValue: string): Promise<Products[]> {
     let products = []
@@ -243,14 +228,14 @@ WHERE
 
 
     return products;
-  }
+  };
 
   async findOne(id: number): Promise<Products> {
     return this.productRepository.findOne({
       where: { id },
       relations: ['images', 'units_of_measurements', 'categories'], 
     });
-  }
+  };
 
   async findAll(): Promise<Products[]> {
     return this.productRepository
@@ -260,15 +245,15 @@ WHERE
       .leftJoinAndSelect('product.categories', 'categories') 
       .leftJoinAndSelect('categories.offer', 'offer') 
       .getMany();
-  }
+  };
 
   async findImage(productId){
     return this.imagesService.findByProductId(productId);
-  }
+  };
 
   async removeImage(imageId){
     this.imagesService.remove(imageId);
-  }
+  };
   
   async update(id: number, updateProductDto: UpdateProductDto, file): Promise<Products> {
     const product = await this.productRepository.findOne({ where: { id } });
@@ -289,7 +274,7 @@ WHERE
     const updatedProduct = await this.productRepository.save(product);
   
     return updatedProduct;
-  }
+  };
 
   async remove(id: number): Promise<void> {
     const productId = id;
@@ -301,6 +286,7 @@ WHERE
     product.deletedAt = new Date();
     
     await this.productRepository.save(product);
-  }
+  };
+  
 }
 
