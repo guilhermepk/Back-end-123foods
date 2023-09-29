@@ -9,6 +9,7 @@ import { UnitsOfMeasurement } from 'src/units_of_measurement/entities/units_of_m
 import { Categories } from 'src/categories/entities/categories.entity';
 import { ImagesService } from 'src/images/images.service';
 import { ProductsController } from './products.controller';
+import { EntityManager } from 'typeorm';
 
 @Injectable()
 export class ProductsService {
@@ -109,31 +110,66 @@ export class ProductsService {
   }
 
   async findSimilar(productId: number): Promise<Products[]> {
-    const product = await this.productRepository
-      .createQueryBuilder('product')
-      .leftJoinAndSelect('product.categories', 'category')
-      .where('product.id = :productId', { productId: productId })
-      .getOne();
-  
-    if (!product) {
-      throw new Error('Produto não encontrado');
+    const query = `
+    SELECT DISTINCT ON (p.id)
+    p.name AS name,
+    p.brand AS brand,
+    p.weight AS weight,
+    p.amount AS amount,
+    p.description AS description,
+    p.price AS price,
+    i.*,
+    STRING_AGG(c.name, ', ') AS category_names -- Agrupa todas as categorias em uma única coluna
+FROM
+    products p
+JOIN
+    images i ON p.id = i."productId"
+JOIN
+    category_products cp ON p.id = cp."productsId"
+JOIN
+    categories c ON cp."categoriesId" = c.id
+WHERE
+    p.id <> ${productId} -- Exclui o produto com o ID especificado (variável)
+    AND EXISTS (
+        -- Subconsulta para verificar a existência de produtos com pelo menos 2 categorias em comum com o produto especificado
+        SELECT 1
+        FROM category_products cp1
+        WHERE cp1."productsId" = p.id
+        AND cp1."categoriesId" IN (
+            -- Subconsulta para obter as categorias do produto especificado (variável)
+            SELECT "categoriesId"
+            FROM category_products
+            WHERE "productsId" = ${productId} -- ID do produto especificado (variável)
+        )
+        GROUP BY cp1."productsId"
+        HAVING COUNT(DISTINCT cp1."categoriesId") >= 2
+    )
+    AND p.id = (
+        -- Subconsulta para selecionar o produto com o maior ID dentro do mesmo grupo de categorias do produto especificado
+        SELECT MAX(p2.id)
+        FROM products p2
+        JOIN category_products cp2 ON p2.id = cp2."productsId"
+        WHERE cp2."productsId" = p.id
+        AND cp2."categoriesId" IN (
+            -- Subconsulta para obter as categorias do produto especificado (variável)
+            SELECT "categoriesId"
+            FROM category_products
+            WHERE "productsId" = ${productId} -- ID do produto especificado (variável)
+        )
+        GROUP BY cp2."productsId"
+    )
+    GROUP BY p.id, p.name, p.brand, p.weight, p.amount, p.description, p.price, i.id, i.path;
+
+    `;
+
+    try {
+      const result = await this.productRepository.query(query);
+      return result;
+    } catch (error) {
+      throw new Error(`Erro na consulta SQL: ${error.message}`);
     }
-  
-    const productCategories = product.categories.map((category) => category.id);
-  
-    const similarProducts = await this.productRepository
-      .createQueryBuilder('product')
-      .innerJoin('product.categories', 'category')
-      .leftJoinAndSelect('product.images', 'images')
-      .addGroupBy('product.id')
-      .addGroupBy('images.id') 
-      .having('COUNT(category.id) >= 2')
-      .andHaving('COUNT(category.id) = :categoryCount', { categoryCount: productCategories.length })
-      .andWhere('product.id != :productId', { productId: productId })
-      .getMany();
-  
-    return similarProducts;
   }
+  
   
   
 
