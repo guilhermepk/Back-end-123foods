@@ -63,21 +63,76 @@ export class ProductsService {
     });
   };
 
+  async findSimilar(productId: number): Promise<Products[]> {
+    const query = `
+      SELECT DISTINCT ON (p.id)
+      p.name AS name,
+      p.brand AS brand,
+      p.weight AS weight,
+      p.amount AS amount,
+      p.description AS description,
+      p.price AS price,
+      i.*,
+      STRING_AGG(c.name, ', ') AS category_names 
+      FROM
+        products p
+      JOIN
+        images i ON p.id = i."productId"
+      JOIN
+        category_products cp ON p.id = cp."productsId"
+      JOIN
+        categories c ON cp."categoriesId" = c.id
+      WHERE
+        p.id <> ${productId} 
+        AND EXISTS (
+          SELECT 1
+          FROM category_products cp1
+          WHERE cp1."productsId" = p.id
+          AND cp1."categoriesId" IN (
+            SELECT "categoriesId"
+            FROM category_products
+            WHERE "productsId" = ${productId} 
+          )
+          GROUP BY cp1."productsId"
+          HAVING COUNT(DISTINCT cp1."categoriesId") >= 2
+        )
+        AND p.id = (
+          SELECT MAX(p2.id)
+          FROM products p2
+          JOIN category_products cp2 ON p2.id = cp2."productsId"
+          WHERE cp2."productsId" = p.id
+          AND cp2."categoriesId" IN (
+            SELECT "categoriesId"
+            FROM category_products
+            WHERE "productsId" = ${productId} 
+          )
+          GROUP BY cp2."productsId"
+        )
+        GROUP BY p.id, p.name, p.brand, p.weight, p.amount, p.description, p.price, i.id, i.path;
+    `;
+    try {
+      const result = await this.productRepository.query(query);
+      return result;
+    } catch (error) {
+      throw new Error(`Erro na consulta SQL: ${error.message}`);
+    }
+  };
+
   async searchName(filterValue: string): Promise<Products[]> {
-    return this.productRepository.createQueryBuilder('product')
+    const products = await this.productRepository.createQueryBuilder('product')
       .where('product.name ILIKE :filterValue', { filterValue: `%${filterValue}%` })
-      .leftJoinAndSelect('product.images', 'image')
-      .leftJoinAndSelect('categories.offer', 'offer') 
-      .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
       .leftJoinAndSelect('product.categories', 'categories')
+      .leftJoinAndSelect('product.images', 'images')
+      .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
       .getMany();
+
+    return products
   };
 
   async searchBrand(filterValue: string): Promise<Products[]> {
-    return this.productRepository.createQueryBuilder('product')
+    return await this.productRepository.createQueryBuilder('product')
       .where('product.brand ILIKE :filterValue', { filterValue: `%${filterValue}%` })
       .leftJoinAndSelect('product.images', 'image')
-      .leftJoinAndSelect('categories.offer', 'offer') 
       .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
       .leftJoinAndSelect('product.categories', 'categories')
       .getMany();
@@ -103,68 +158,12 @@ export class ProductsService {
     }
   };
 
-  async findSimilar(productId: number): Promise<Products[]> {
-    const query = `
-    SELECT DISTINCT ON (p.id)
-    p.name AS name,
-    p.brand AS brand,
-    p.weight AS weight,
-    p.amount AS amount,
-    p.description AS description,
-    p.price AS price,
-    i.*,
-    STRING_AGG(c.name, ', ') AS category_names 
-FROM
-    products p
-JOIN
-    images i ON p.id = i."productId"
-JOIN
-    category_products cp ON p.id = cp."productsId"
-JOIN
-    categories c ON cp."categoriesId" = c.id
-WHERE
-    p.id <> ${productId} 
-    AND EXISTS (
-        SELECT 1
-        FROM category_products cp1
-        WHERE cp1."productsId" = p.id
-        AND cp1."categoriesId" IN (
-            SELECT "categoriesId"
-            FROM category_products
-            WHERE "productsId" = ${productId} 
-        )
-        GROUP BY cp1."productsId"
-        HAVING COUNT(DISTINCT cp1."categoriesId") >= 2
-    )
-    AND p.id = (
-        SELECT MAX(p2.id)
-        FROM products p2
-        JOIN category_products cp2 ON p2.id = cp2."productsId"
-        WHERE cp2."productsId" = p.id
-        AND cp2."categoriesId" IN (
-            SELECT "categoriesId"
-            FROM category_products
-            WHERE "productsId" = ${productId} 
-        )
-        GROUP BY cp2."productsId"
-    )
-    GROUP BY p.id, p.name, p.brand, p.weight, p.amount, p.description, p.price, i.id, i.path;
-    `;
-    try {
-      const result = await this.productRepository.query(query);
-      return result;
-    } catch (error) {
-      throw new Error(`Erro na consulta SQL: ${error.message}`);
-    }
-  };
-
   async searchDescription(filterValue: string): Promise<Products[]> {
     const products = await this.productRepository.createQueryBuilder('product')
       .where('product.description ILIKE :filterValue', { filterValue: `%${filterValue}%` })
       .leftJoinAndSelect('product.images', 'images')
-      .leftJoinAndSelect('categories.offer', 'offer') 
       .leftJoinAndSelect('product.units_of_measurements', 'unitsofmeasurementId')
-      .leftJoinAndSelect('product.categories', 'categoriesId') 
+      .leftJoinAndSelect('product.categories', 'categories')
       .getMany();
       
       return products;
@@ -207,6 +206,7 @@ WHERE
       }
     })
 
+    console.log('products', products)
     return products;
   };
 
