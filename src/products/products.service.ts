@@ -206,7 +206,6 @@ export class ProductsService {
       }
     })
 
-    console.log('products', products)
     return products;
   };
 
