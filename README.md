@@ -1,3 +1,28 @@
+# Market e-commerce backend
+
+## Description
+This is a backend server made with nestjs for a simple e-commerce system.
+
+## How to install
+
+* instalar o postgres
+* instalar o pgadmin
+* node na versão 14.15.0 ou acima
+* criar um arquivo chamado ".env" na pasta raiz e configurá-lo no formato:
+
+```bash
+DB_HOST = 127.0.0.1
+DB_PORT = 5432
+DB_USERNAME = postgres
+DB_PASSWORD = root
+DB_NAME = <nome_do_seu_banco_de_dados>
+```
+> O banco de dados deve ser criado manualmente no pgAdmin com o exato mesmo nome que for colocado no ".env"
+
+
+
+# About nest
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
